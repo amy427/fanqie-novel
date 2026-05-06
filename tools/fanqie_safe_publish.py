@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+import sys
+import traceback
 
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
@@ -212,4 +214,24 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except SystemExit:
+        raise
+    except Exception as exc:
+        ensure_dirs()
+        stamp = now_stamp()
+        append_markdown_log(
+            RUN_LOG,
+            f"{stamp} safe publish failed before completion",
+            [
+                f"- Result: `failed`",
+                f"- Error: `{type(exc).__name__}: {exc}`",
+                "- Traceback:",
+                "```text",
+                traceback.format_exc().strip(),
+                "```",
+            ],
+        )
+        print("ERROR:", type(exc).__name__, exc, file=sys.stderr)
+        raise SystemExit(1)
