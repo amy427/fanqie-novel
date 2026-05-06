@@ -19,6 +19,16 @@ auto_publish_external: false
 
 This config enables automatic query, not automatic Fanqie publishing.
 
+## Read-Only Query Tool
+
+```powershell
+python tools/fanqie_readonly_metrics.py
+```
+
+This tool may run automatically when a verified analytics or comments page is open in the CDP-connected Chromium session.
+
+If the page cannot be verified, it skips and records the reason.
+
 ## Import Folder
 
 Place exported reader metrics or comments here:

@@ -57,6 +57,21 @@ Only allowed when all are true:
 
 If the page cannot be verified, skip browser query.
 
+Implementation:
+
+```powershell
+python tools/fanqie_readonly_metrics.py
+```
+
+This script:
+
+1. Connects to Chromium over CDP.
+2. Reads only URL, title, body text, and visible page content.
+3. Verifies that the page appears to be a Fanqie analytics/comments page.
+4. Writes JSON and page text to `feedback/imports/`.
+5. Updates `feedback/query_log.md`.
+6. Does not click, publish, save, submit, or edit anything.
+
 ## Missing Data Policy
 
 When real metrics are missing, keep placeholders and record:

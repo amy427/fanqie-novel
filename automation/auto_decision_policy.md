@@ -70,3 +70,27 @@ auto_publish_external: false
 Reason:
 
 The existing `tools/` scripts operate on the last open Chromium page over CDP. This is acceptable for supervised publishing, but not yet safe enough for unattended external publishing.
+
+## Safe Publisher Tool
+
+The supervised safe publisher is:
+
+```powershell
+python tools/fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX
+```
+
+Default mode is dry-run. It validates the file, chapter number, page identity, content hash, and writes screenshots/logs.
+
+To fill but not submit:
+
+```powershell
+python tools/fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --fill
+```
+
+To submit, the caller must provide the exact printed SHA256:
+
+```powershell
+python tools/fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --fill --submit --confirm-submit <SHA256>
+```
+
+Unattended automation must not pass `--submit` unless `auto_publish_external: true` is explicitly configured in `feedback/source_config.md`.
