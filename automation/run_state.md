@@ -17,6 +17,8 @@ Routine human confirmation gates are disabled for local repository operations. A
 
 Feedback query is enabled through `automation/feedback_query.md` and `feedback/source_config.md`.
 
+Automatic Fanqie publishing is enabled through `tools/fanqie_safe_publish.py --auto-submit` when CDP is available and page validation passes.
+
 ## Next Human Gate
 
 Recommended next step:

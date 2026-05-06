@@ -24,7 +24,7 @@
 2. 第030章承接上一任J-317和第七节车厢。
 3. 发布后回填真实读者反馈和章节数据。
 4. 使用自动反馈查询、连续性审计、周复盘来校正后续章节。
-5. 使用 `tools/fanqie_readonly_metrics.py` 做只读反馈接入，使用 `tools/fanqie_safe_publish.py` 做受控发布校验。
+5. 使用 `tools/fanqie_readonly_metrics.py` 做只读反馈接入，使用 `tools/fanqie_safe_publish.py --auto-submit` 做无人值守发布。
 
 ## 4. 使用方式
 

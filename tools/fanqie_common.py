@@ -13,6 +13,8 @@ FEEDBACK_DIR = PROJECT_ROOT / "feedback"
 FEEDBACK_IMPORTS_DIR = FEEDBACK_DIR / "imports"
 PUBLISH_LOG_DIR = DAILY_OUTPUT_DIR / "publish_logs"
 CDP_URL = "http://127.0.0.1:9222"
+PUBLISH_URL = "https://fanqienovel.com/main/writer/7628203489469942846/publish/?enter_from=newchapter_0"
+SOURCE_CONFIG_PATH = FEEDBACK_DIR / "source_config.md"
 
 
 def now_stamp() -> str:
@@ -95,3 +97,9 @@ def looks_like_analytics_or_comments(url: str, title: str, body_text: str) -> bo
         marker.lower() in haystack for marker in page_markers
     )
 
+
+def auto_publish_external_enabled() -> bool:
+    if not SOURCE_CONFIG_PATH.exists():
+        return False
+    text = SOURCE_CONFIG_PATH.read_text(encoding="utf-8").lower()
+    return "auto_publish_external: true" in text

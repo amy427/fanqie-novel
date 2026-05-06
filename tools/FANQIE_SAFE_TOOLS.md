@@ -39,6 +39,18 @@ Submit requires explicit SHA confirmation:
 python tools/fanqie_safe_publish.py --file daily_output\第029章_番茄发布版.txt --expected-chapter 29 --fill --submit --confirm-submit <SHA256>
 ```
 
+Unattended automatic publish:
+
+```powershell
+python tools/fanqie_safe_publish.py --file daily_output\第029章_番茄发布版.txt --expected-chapter 29 --open-publish-page --create-chapter --auto-submit
+```
+
+This only works when `feedback/source_config.md` contains:
+
+```text
+auto_publish_external: true
+```
+
 Logs and screenshots are written to:
 
 ```text

@@ -14,10 +14,19 @@ Current version date: 2026-05-06
 ## External Publishing
 
 ```text
-auto_publish_external: false
+auto_publish_external: true
 ```
 
-This config enables automatic query, not automatic Fanqie publishing.
+This config enables automatic query and unattended Fanqie publishing through `tools/fanqie_safe_publish.py`.
+
+Automatic publishing remains guarded by:
+
+1. Chapter number validation.
+2. No-blank-line publish file validation.
+3. Fanqie page verification.
+4. Fill-and-read-back body verification.
+5. Publish log and screenshots.
+6. Local JSON audit record.
 
 ## Read-Only Query Tool
 

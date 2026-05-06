@@ -40,9 +40,22 @@ This is a daily automation instruction file. It should be read together with:
 15. If fail, keep only daily output draft, QA report, and dry-run log.
 16. Generate required `daily_output` artifacts.
 17. Update `continuity/`, `decision_log/`, `feedback/`, `automation/run_index.md`, and `automation/run_state.md`.
-18. Write dry-run log.
-19. Commit changes locally when files were created.
-20. Push to GitHub after commit unless network is unavailable.
+18. If `feedback/source_config.md` contains `auto_publish_external: true`, publish the passed chapter through the safe publisher.
+19. Write dry-run log.
+20. Commit changes locally when files were created.
+21. Push to GitHub after commit unless network is unavailable.
+
+## Automatic External Publish Step
+
+Only run after the target chapter has passed QA and the target publish file exists.
+
+Command format:
+
+```powershell
+python tools/fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --open-publish-page --create-chapter --auto-submit
+```
+
+If CDP is unavailable, login has expired, the page cannot be verified, or the publisher fails validation, record the failure in `daily_output/publish_logs/` and continue the local archive/commit flow. Do not retry in a loop.
 
 ## Required Daily Output Files
 

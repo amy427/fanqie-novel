@@ -12,10 +12,8 @@ Current version date: 2026-05-06
 6. Do not rename files.
 7. Do not overwrite existing `chapters/第XXX章_全文.md`.
 8. Do not overwrite existing `chapter_summaries/第XXX章_摘要.md`.
-9. Do not open browser.
-10. Do not access Fanqie backend.
-11. Do not publish.
-12. Do not upload.
+9. Do not use legacy unsafe publish scripts in unattended automation.
+10. Do not publish through external platforms unless `auto_publish_external: true` is configured and `tools/fanqie_safe_publish.py --auto-submit` is used.
 
 ## Allowed Creates
 
@@ -25,6 +23,7 @@ Daily automation may create:
 2. New target chapter files only if they do not already exist.
 3. New target daily output artifacts.
 4. New run logs.
+5. New publish logs and screenshots under `daily_output/publish_logs/`.
 
 Daily automation may not edit older chapter artifacts except the target chapter artifacts it created in the current run.
 

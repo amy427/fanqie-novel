@@ -64,12 +64,12 @@ Codex must not publish to Fanqie or any external platform unless a dedicated saf
 Current status:
 
 ```text
-auto_publish_external: false
+auto_publish_external: true
 ```
 
 Reason:
 
-The existing `tools/` scripts operate on the last open Chromium page over CDP. This is acceptable for supervised publishing, but not yet safe enough for unattended external publishing.
+The dedicated safe publisher now supports unattended auto-submit when the config is enabled.
 
 ## Safe Publisher Tool
 
@@ -87,10 +87,16 @@ To fill but not submit:
 python tools/fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --fill
 ```
 
-To submit, the caller must provide the exact printed SHA256:
+To submit manually, the caller may still provide the exact printed SHA256:
 
 ```powershell
 python tools/fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --fill --submit --confirm-submit <SHA256>
 ```
 
-Unattended automation must not pass `--submit` unless `auto_publish_external: true` is explicitly configured in `feedback/source_config.md`.
+Unattended automation may publish without manual SHA entry by using:
+
+```powershell
+python tools/fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --open-publish-page --create-chapter --auto-submit
+```
+
+This requires `auto_publish_external: true` in `feedback/source_config.md`.
