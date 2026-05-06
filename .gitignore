@@ -1,0 +1,28 @@
+.pw-fanqie-profile/
+
+# Python caches and local tooling output
+__pycache__/
+.pytest_cache/
+*.py[cod]
+
+# Local environment and secrets
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+~$*
