@@ -36,7 +36,7 @@ Reason:
 
 1. The publish-ready chapter is not formal yet.
 2. Generating the next chapter would break the archive chain.
-3. Human or post-publish archival workflow must resolve it first.
+3. Automation must archive `N+1` first if formal target files do not already exist.
 
 ## Run Lock
 
@@ -54,7 +54,7 @@ After a completed run with file changes:
 1. Run `git status --short --branch`.
 2. Stage only created files for this run.
 3. Commit.
-4. Do not push to GitHub during the dry run unless the user explicitly enables network upload.
+4. Push to GitHub after commit unless network is unavailable.
 
 Suggested commit messages:
 

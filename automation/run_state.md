@@ -13,6 +13,10 @@ Last updated: 2026-05-06
 
 Daily chapter generation may now target 第030章.
 
+Routine human confirmation gates are disabled for local repository operations. Automation may choose title, archive passed chapters, update continuity, commit, and push.
+
+Feedback query is enabled through `automation/feedback_query.md` and `feedback/source_config.md`.
+
 ## Next Human Gate
 
 Recommended next step:

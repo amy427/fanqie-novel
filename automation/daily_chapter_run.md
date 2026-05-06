@@ -12,8 +12,14 @@ This is a daily automation instruction file. It should be read together with:
 2. `automation/chapter_generation_spec.md`
 3. `automation/quality_gates.md`
 4. `automation/run_state.md`
-5. `NOVEL_OS.md`
-6. `OPERATING_LOOP.md`
+5. `automation/auto_decision_policy.md`
+6. `automation/feedback_query.md`
+7. `NOVEL_OS.md`
+8. `OPERATING_LOOP.md`
+9. `continuity/open_threads.md`
+10. `continuity/object_state.md`
+11. `continuity/character_state.md`
+12. `continuity/rules_state.md`
 
 ## Execution Order
 
@@ -21,20 +27,22 @@ This is a daily automation instruction file. It should be read together with:
 2. Confirm `chapter_summaries/`, `daily_output/`, and `daily_output/automation_runs/` exist; create missing directories only.
 3. Check for `daily_output/.run_lock`; if present, stop and write only a short automation run note in `daily_output/automation_runs/`.
 4. Scan `chapters/`, `chapter_summaries/`, and `daily_output/`.
-5. Determine the latest formal chapter by `chapters/第XXX章_全文.md`.
-6. Check whether any `daily_output/第YYY章_质检报告.md` for a chapter newer than the latest formal chapter says `是否建议人工发布：是`.
-7. If such a newer publish-ready chapter exists, stop generation and report that the pending chapter should be archived or manually resolved first.
-8. If no pending publish-ready chapter exists, target chapter is latest formal chapter number + 1.
-9. If target formal chapter or target summary already exists, stop. Do not overwrite.
-10. Read required canon, summaries, and recent chapters according to `chapter_generation_spec.md`.
-11. Generate target chapter into daily output first.
-12. Run quality gates.
-13. If pass, write formal chapter and formal summary.
-14. If fail, keep only daily output draft, QA report, and dry-run log.
-15. Generate required `daily_output` artifacts.
-16. Write dry-run log.
-17. Commit changes locally when files were created.
-18. Do not push to GitHub during the dry run unless the user explicitly enables network upload.
+5. Run feedback query according to `automation/feedback_query.md`; if unavailable, log and continue.
+6. Determine the latest formal chapter by `chapters/第XXX章_全文.md`.
+7. Check whether any `daily_output/第YYY章_质检报告.md` for a chapter newer than the latest formal chapter says `是否建议人工发布：是`.
+8. If such a newer publish-ready chapter exists, archive it automatically before generating later chapters, as long as target formal files do not already exist.
+9. If no pending publish-ready chapter exists, target chapter is latest formal chapter number + 1.
+10. If target formal chapter or target summary already exists, stop. Do not overwrite.
+11. Read required canon, summaries, recent chapters, feedback, and continuity files according to `chapter_generation_spec.md`.
+12. Generate target chapter into daily output first.
+13. Run quality gates.
+14. If pass, write formal chapter and formal summary automatically.
+15. If fail, keep only daily output draft, QA report, and dry-run log.
+16. Generate required `daily_output` artifacts.
+17. Update `continuity/`, `decision_log/`, `feedback/`, `automation/run_index.md`, and `automation/run_state.md`.
+18. Write dry-run log.
+19. Commit changes locally when files were created.
+20. Push to GitHub after commit unless network is unavailable.
 
 ## Required Daily Output Files
 
