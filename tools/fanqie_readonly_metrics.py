@@ -8,6 +8,7 @@ from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
 from fanqie_common import (
+    CDP_URL,
     FEEDBACK_IMPORTS_DIR,
     append_markdown_log,
     dump_json,
@@ -38,7 +39,7 @@ def parse_metric_candidates(text: str) -> dict[str, list[str]]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Read-only Fanqie metrics/comments page scraper.")
-    parser.add_argument("--cdp", default="http://127.0.0.1:9222", help="Chromium CDP endpoint; kept for CLI clarity.")
+    parser.add_argument("--cdp", default=CDP_URL, help="Chromium CDP endpoint; kept for CLI clarity.")
     parser.add_argument("--allow-unverified", action="store_true", help="Save page text even if page type is not verified.")
     parser.add_argument("--max-chars", type=int, default=60000)
     args = parser.parse_args()
@@ -117,4 +118,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

@@ -138,3 +138,26 @@ Call log:
 - JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-07_191239_chapter_031_safe_publish.json`
 - Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-07_191239_chapter_031_precheck.png`
 - Submitted: `True`
+
+## 2026-05-07_191718 safe publish failed before completion
+- Result: `failed`
+- Error: `RuntimeError: Final publish confirmation button not found`
+- Traceback:
+```text
+Traceback (most recent call last):
+  File "D:\fanqie-novel\tools\fanqie_safe_publish.py", line 300, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "D:\fanqie-novel\tools\fanqie_safe_publish.py", line 269, in main
+    raise RuntimeError("Final publish confirmation button not found")
+RuntimeError: Final publish confirmation button not found
+```
+
+## 2026-05-07_191914 chapter 030 safe publish
+- Mode: `submit`
+- Title: `第030章 观察席`
+- SHA256: `55a50fd73608152fc6fa08bfdb10395422b36cc45af244c934646796e80bc27f`
+- Verified page: `True`
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-07_191914_chapter_030_safe_publish.json`
+- Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-07_191914_chapter_030_precheck.png`
+- Submitted: `True`

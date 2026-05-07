@@ -12,7 +12,8 @@ DAILY_OUTPUT_DIR = PROJECT_ROOT / "daily_output"
 FEEDBACK_DIR = PROJECT_ROOT / "feedback"
 FEEDBACK_IMPORTS_DIR = FEEDBACK_DIR / "imports"
 PUBLISH_LOG_DIR = DAILY_OUTPUT_DIR / "publish_logs"
-CDP_URL = "http://127.0.0.1:9222"
+# Dedicated long-novel Chromium CDP endpoint. Keep short-story automation on 9222.
+CDP_URL = "http://127.0.0.1:9223"
 PUBLISH_URL = "https://fanqienovel.com/main/writer/7628203489469942846/publish/?enter_from=newchapter_0"
 SOURCE_CONFIG_PATH = FEEDBACK_DIR / "source_config.md"
 

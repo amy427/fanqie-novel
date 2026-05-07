@@ -103,6 +103,41 @@ def click_last_button_by_text(page, texts: list[str], timeout: int = 15000) -> s
     return None
 
 
+def click_modal_primary(modal, timeout: int = 10000) -> str | None:
+    buttons = modal.locator("button.arco-btn-primary")
+    if buttons.count() == 0:
+        buttons = modal.locator("button")
+    if buttons.count() == 0:
+        return None
+    button = buttons.last
+    try:
+        text = button.inner_text(timeout=1000).strip()
+    except Exception:
+        text = "<unreadable>"
+    button.click(timeout=timeout)
+    return text
+
+
+def select_ai_yes_if_present(modal) -> bool:
+    radio = modal.locator("input[type='radio'][value='1']").first
+    if radio.count() == 0:
+        return False
+    try:
+        radio.locator("xpath=ancestor::label[1]").click(timeout=10000)
+    except Exception:
+        radio.check(force=True, timeout=10000)
+    return True
+
+
+def wait_and_click_last_button_by_text(page, texts: list[str], attempts: int = 15) -> str | None:
+    for _ in range(attempts):
+        clicked = click_last_button_by_text(page, texts, timeout=3000)
+        if clicked:
+            return clicked
+        page.wait_for_timeout(1000)
+    return None
+
+
 def safe_screenshot(page, path: Path, log_data: dict, key: str) -> None:
     try:
         page.screenshot(path=str(path), full_page=True, timeout=60000)
@@ -111,7 +146,15 @@ def safe_screenshot(page, path: Path, log_data: dict, key: str) -> None:
         log_data[f"{key}_error"] = f"{type(exc).__name__}: {exc}"
 
 
-def get_page(playwright, new_page: bool):
+def get_page(playwright, new_page: bool, page_url_contains: str = ""):
+    if page_url_contains:
+        browser = playwright.chromium.connect_over_cdp(CDP_URL)
+        for context in browser.contexts:
+            for page in context.pages:
+                if page_url_contains in page.url:
+                    return browser, page
+        browser.close()
+        raise RuntimeError(f"No CDP page URL contains: {page_url_contains}")
     if not new_page:
         return get_last_page(playwright)
     browser = playwright.chromium.connect_over_cdp(CDP_URL)
@@ -128,6 +171,7 @@ def main() -> int:
     parser.add_argument("--auto-submit", action="store_true", help="Unattended fill+submit if auto_publish_external is true in feedback/source_config.md.")
     parser.add_argument("--open-publish-page", action="store_true", help="Navigate to the configured Fanqie publish page before validation.")
     parser.add_argument("--new-page", action="store_true", help="Open a new browser tab over CDP instead of reusing the last open page.")
+    parser.add_argument("--page-url-contains", default="", help="Reuse an existing CDP page whose URL contains this text.")
     parser.add_argument("--create-chapter", action="store_true", help="Click 创建章节 if present before filling.")
     parser.add_argument("--confirm-submit", default="", help="Must equal expected SHA256 to allow submit.")
     parser.add_argument("--allow-unverified-page", action="store_true")
@@ -155,7 +199,7 @@ def main() -> int:
         raise SystemExit("Submit refused: requires --confirm-submit equal to content SHA256")
 
     with sync_playwright() as p:
-        browser, page = get_page(p, args.new_page)
+        browser, page = get_page(p, args.new_page, args.page_url_contains)
         if args.open_publish_page:
             page.goto(PUBLISH_URL, wait_until="domcontentloaded", timeout=45000)
             try:
@@ -200,6 +244,7 @@ def main() -> int:
             "auto_submit": args.auto_submit,
             "opened_publish_page": args.open_publish_page,
             "new_page": args.new_page,
+            "page_url_contains": args.page_url_contains,
             "create_chapter_requested": args.create_chapter,
             "filled": False,
             "submitted": False,
@@ -250,10 +295,9 @@ def main() -> int:
             if modal.count():
                 modal_text = modal.inner_text(timeout=10000)
                 log_data["submit_modal_text_start"] = modal_text[:500]
-                yes_text = modal.get_by_text("是", exact=True)
-                if yes_text.count():
-                    yes_text.first.click(timeout=10000)
-                confirm_clicked = click_last_button_by_text(page, ["确认发布", "确认提交", "提交", "确认", "确定"])
+                if select_ai_yes_if_present(modal):
+                    log_data["ai_used_selected"] = True
+                confirm_clicked = click_modal_primary(modal)
                 if confirm_clicked is None:
                     raise RuntimeError("Confirm publish button not found")
                 log_data["confirm_submit_click"] = confirm_clicked
