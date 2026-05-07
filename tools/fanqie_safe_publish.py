@@ -10,6 +10,7 @@ from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
 from fanqie_common import (
+    CDP_URL,
     PUBLISH_LOG_DIR,
     PUBLISH_URL,
     append_markdown_log,
@@ -110,6 +111,14 @@ def safe_screenshot(page, path: Path, log_data: dict, key: str) -> None:
         log_data[f"{key}_error"] = f"{type(exc).__name__}: {exc}"
 
 
+def get_page(playwright, new_page: bool):
+    if not new_page:
+        return get_last_page(playwright)
+    browser = playwright.chromium.connect_over_cdp(CDP_URL)
+    context = browser.contexts[0] if browser.contexts else browser.new_context()
+    return browser, context.new_page()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Safe Fanqie publish helper with dry-run default.")
     parser.add_argument("--file", required=True, help="Path to 第XXX章_番茄发布版.txt")
@@ -118,6 +127,7 @@ def main() -> int:
     parser.add_argument("--submit", action="store_true", help="Submit/publish after validation. Requires --fill and --confirm-submit.")
     parser.add_argument("--auto-submit", action="store_true", help="Unattended fill+submit if auto_publish_external is true in feedback/source_config.md.")
     parser.add_argument("--open-publish-page", action="store_true", help="Navigate to the configured Fanqie publish page before validation.")
+    parser.add_argument("--new-page", action="store_true", help="Open a new browser tab over CDP instead of reusing the last open page.")
     parser.add_argument("--create-chapter", action="store_true", help="Click 创建章节 if present before filling.")
     parser.add_argument("--confirm-submit", default="", help="Must equal expected SHA256 to allow submit.")
     parser.add_argument("--allow-unverified-page", action="store_true")
@@ -145,7 +155,7 @@ def main() -> int:
         raise SystemExit("Submit refused: requires --confirm-submit equal to content SHA256")
 
     with sync_playwright() as p:
-        browser, page = get_last_page(p)
+        browser, page = get_page(p, args.new_page)
         if args.open_publish_page:
             page.goto(PUBLISH_URL, wait_until="domcontentloaded", timeout=45000)
             try:
@@ -189,6 +199,7 @@ def main() -> int:
             "verified_page": verified,
             "auto_submit": args.auto_submit,
             "opened_publish_page": args.open_publish_page,
+            "new_page": args.new_page,
             "create_chapter_requested": args.create_chapter,
             "filled": False,
             "submitted": False,

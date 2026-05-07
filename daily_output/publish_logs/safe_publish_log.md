@@ -129,3 +129,12 @@ Call log:
 - JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-07_190013_chapter_031_safe_publish.json`
 - Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-07_190013_chapter_031_precheck.png`
 - Submitted: `True`
+
+## 2026-05-07_191239 chapter 031 safe publish
+- Mode: `submit`
+- Title: `第031章 下层敲门`
+- SHA256: `6ae3eb580a03f3de15482188506315bd0d6065b9c7159257cf4c95f991287337`
+- Verified page: `True`
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-07_191239_chapter_031_safe_publish.json`
+- Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-07_191239_chapter_031_precheck.png`
+- Submitted: `True`
