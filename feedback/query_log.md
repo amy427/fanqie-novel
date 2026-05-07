@@ -14,3 +14,14 @@
 Call log:
   - <ws preparing> retrieving websocket url from http://127.0.0.1:9222
 `
+
+## 2026-05-07 Fanqie read-only query failed
+- Result: failed
+- Error: `Python runtime unavailable: python not found; py launcher reports no installed Python`
+- Action: continued with local repository files and empty feedback imports
+
+## 2026-05-07_185627 Fanqie read-only query skipped
+- Result: skipped
+- Reason: current page was not verified as Fanqie analytics/comments page
+- URL: `https://fanqienovel.com/main/writer/7628203489469942846/publish/7635508309587411480?enter_from=newchapter_0`
+- Title: `作家专区-番茄小说网-番茄小说旗下原创文学平台`

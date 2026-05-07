@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+import re
 import sys
 import traceback
 
@@ -42,9 +43,31 @@ def find_title_input(page):
     raise RuntimeError("Title input not found")
 
 
+def split_chapter_title(title: str) -> tuple[int | None, str]:
+    match = re.search(r"第\s*0*(\d+)\s*章\s*(.*)", title)
+    if not match:
+        return None, title.strip()
+    chapter_no = int(match.group(1))
+    chapter_title = match.group(2).strip() or title.strip()
+    return chapter_no, chapter_title
+
+
+def find_chapter_number_input(page):
+    candidates = [
+        page.locator("input.serial-input").nth(0),
+        page.locator("input[type='text']").first,
+    ]
+    for locator in candidates:
+        try:
+            if locator.count() and locator.first.is_visible(timeout=2000):
+                return locator.first
+        except Exception:
+            continue
+    raise RuntimeError("Chapter number input not found")
+
+
 def find_body_editor(page):
     candidates = [
-        page.locator("[contenteditable='true']").filter(has_text="请输入正文").first,
         page.locator("[contenteditable='true']").first,
         page.locator("textarea[placeholder*='正文']").first,
     ]
@@ -55,6 +78,36 @@ def find_body_editor(page):
         except Exception:
             continue
     raise RuntimeError("Body editor not found")
+
+
+def dismiss_known_overlays(page) -> None:
+    for text in ["知道了", "我知道了", "确定"]:
+        try:
+            loc = page.get_by_text(text, exact=True)
+            if loc.count():
+                loc.last.click(timeout=3000)
+                page.wait_for_timeout(500)
+        except Exception:
+            continue
+
+
+def click_last_button_by_text(page, texts: list[str], timeout: int = 15000) -> str | None:
+    for text in texts:
+        loc = page.get_by_role("button", name=text)
+        if loc.count() == 0:
+            loc = page.get_by_text(text, exact=True)
+        if loc.count():
+            loc.last.click(timeout=timeout)
+            return text
+    return None
+
+
+def safe_screenshot(page, path: Path, log_data: dict, key: str) -> None:
+    try:
+        page.screenshot(path=str(path), full_page=True, timeout=60000)
+        log_data[key] = str(path)
+    except PlaywrightTimeoutError as exc:
+        log_data[f"{key}_error"] = f"{type(exc).__name__}: {exc}"
 
 
 def main() -> int:
@@ -74,8 +127,11 @@ def main() -> int:
     stamp = now_stamp()
     path = Path(args.file)
     title, body, full_text = read_publish_file(path)
+    chapter_no_from_title, chapter_title = split_chapter_title(title)
     expected_sha = sha256_text(full_text)
     chapter_no = extract_chapter_number(title)
+    if chapter_no is None:
+        chapter_no = chapter_no_from_title
     if chapter_no != args.expected_chapter:
         raise SystemExit(f"Chapter mismatch: title chapter={chapter_no}, expected={args.expected_chapter}")
     if args.auto_submit:
@@ -100,6 +156,7 @@ def main() -> int:
             page.wait_for_load_state("domcontentloaded", timeout=15000)
         except PlaywrightTimeoutError:
             pass
+        dismiss_known_overlays(page)
 
         if args.create_chapter:
             create = page.get_by_text("创建章节", exact=True).first
@@ -119,9 +176,6 @@ def main() -> int:
             browser.close()
             raise SystemExit(f"Current page not verified as Fanqie author page: {url} | {page_title}")
 
-        screenshot_path = PUBLISH_LOG_DIR / f"{stamp}_chapter_{args.expected_chapter:03d}_precheck.png"
-        page.screenshot(path=str(screenshot_path), full_page=True)
-
         log_data = {
             "timestamp": stamp,
             "mode": "submit" if args.submit else "fill" if args.fill else "dry-run",
@@ -136,40 +190,51 @@ def main() -> int:
             "auto_submit": args.auto_submit,
             "opened_publish_page": args.open_publish_page,
             "create_chapter_requested": args.create_chapter,
-            "screenshot": str(screenshot_path),
             "filled": False,
             "submitted": False,
         }
 
+        screenshot_path = PUBLISH_LOG_DIR / f"{stamp}_chapter_{args.expected_chapter:03d}_precheck.png"
+        safe_screenshot(page, screenshot_path, log_data, "screenshot")
+
         if args.fill:
+            dismiss_known_overlays(page)
+            number_input = find_chapter_number_input(page)
             title_input = find_title_input(page)
             editor = find_body_editor(page)
+            number_input.click(timeout=10000)
+            number_input.fill(str(args.expected_chapter))
             title_input.click(timeout=10000)
-            title_input.fill(title)
+            title_input.fill(chapter_title)
             editor.click(timeout=10000)
             editor.fill(body)
             page.wait_for_timeout(1000)
+            number_value = number_input.input_value(timeout=10000)
             title_value = title_input.input_value(timeout=10000) if hasattr(title_input, "input_value") else ""
             editor_text = editor.inner_text(timeout=10000)
-            filled_sha = sha256_text(title_value.strip() + "\n" + editor_text.strip())
-            if title_value.strip() != title:
+            filled_sha = sha256_text(f"第{number_value.strip()}章 {title_value.strip()}\n{editor_text.strip()}")
+            if number_value.strip() != str(args.expected_chapter):
+                raise RuntimeError("Filled chapter number verification failed")
+            if title_value.strip() != chapter_title:
                 raise RuntimeError("Filled title verification failed")
             if "".join(editor_text.split()) != "".join(body.split()):
                 raise RuntimeError("Filled body verification failed")
             log_data["filled"] = True
             log_data["filled_sha256"] = filled_sha
             filled_screenshot = PUBLISH_LOG_DIR / f"{stamp}_chapter_{args.expected_chapter:03d}_filled.png"
-            page.screenshot(path=str(filled_screenshot), full_page=True)
-            log_data["filled_screenshot"] = str(filled_screenshot)
+            safe_screenshot(page, filled_screenshot, log_data, "filled_screenshot")
 
         if args.submit:
-            publish_buttons = page.get_by_role("button", name="发布")
-            if publish_buttons.count() == 0:
-                publish_buttons = page.get_by_text("发布", exact=True)
-            if publish_buttons.count() == 0:
-                raise RuntimeError("Publish button not found")
-            publish_buttons.last.click(timeout=15000)
-            page.wait_for_timeout(1000)
+            dismiss_known_overlays(page)
+            clicked = click_last_button_by_text(page, ["发布", "下一步"])
+            if clicked is None:
+                raise RuntimeError("Publish/next button not found")
+            log_data["first_submit_click"] = clicked
+            try:
+                page.wait_for_load_state("networkidle", timeout=20000)
+            except PlaywrightTimeoutError:
+                pass
+            page.wait_for_timeout(1500)
             modal = page.locator(".arco-modal-wrapper").last
             if modal.count():
                 modal_text = modal.inner_text(timeout=10000)
@@ -177,17 +242,23 @@ def main() -> int:
                 yes_text = modal.get_by_text("是", exact=True)
                 if yes_text.count():
                     yes_text.first.click(timeout=10000)
-                confirm = modal.get_by_role("button", name="确认发布")
-                if confirm.count() == 0:
-                    confirm = modal.get_by_text("确认发布", exact=True)
-                if confirm.count() == 0:
+                confirm_clicked = click_last_button_by_text(page, ["确认发布", "确认提交", "提交", "确认", "确定"])
+                if confirm_clicked is None:
                     raise RuntimeError("Confirm publish button not found")
-                confirm.last.click(timeout=15000)
-            log_data["submitted"] = True
+                log_data["confirm_submit_click"] = confirm_clicked
+                log_data["submitted"] = True
+            else:
+                second_clicked = click_last_button_by_text(page, ["确认发布", "确认提交", "提交", "发布", "确认", "确定"])
+                if second_clicked:
+                    log_data["second_submit_click"] = second_clicked
+                    log_data["submitted"] = True
+                elif clicked == "发布":
+                    log_data["submitted"] = True
+                else:
+                    raise RuntimeError("Final publish confirmation button not found")
             page.wait_for_timeout(5000)
             submitted_screenshot = PUBLISH_LOG_DIR / f"{stamp}_chapter_{args.expected_chapter:03d}_submitted.png"
-            page.screenshot(path=str(submitted_screenshot), full_page=True)
-            log_data["submitted_screenshot"] = str(submitted_screenshot)
+            safe_screenshot(page, submitted_screenshot, log_data, "submitted_screenshot")
 
         json_path = PUBLISH_LOG_DIR / f"{stamp}_chapter_{args.expected_chapter:03d}_safe_publish.json"
         dump_json(json_path, log_data)

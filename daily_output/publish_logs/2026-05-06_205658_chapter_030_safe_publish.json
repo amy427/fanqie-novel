@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-05-06_205658",
+  "mode": "submit",
+  "file": "daily_output\\第030章_番茄发布版.txt",
+  "expected_chapter": 30,
+  "title": "第030章 观察席",
+  "body_non_whitespace_chars": 4982,
+  "sha256": "55a50fd73608152fc6fa08bfdb10395422b36cc45af244c934646796e80bc27f",
+  "url": "https://fanqienovel.com/main/writer/7628203489469942846/publish/7635508309587411480?enter_from=newchapter_0",
+  "page_title": "作家专区-番茄小说网-番茄小说旗下原创文学平台",
+  "verified_page": true,
+  "auto_submit": true,
+  "opened_publish_page": false,
+  "create_chapter_requested": false,
+  "screenshot": "D:\\fanqie-novel\\daily_output\\publish_logs\\2026-05-06_205658_chapter_030_precheck.png",
+  "filled": true,
+  "submitted": true,
+  "filled_sha256": "0c507c3f4f73a72b3e4edd5c3d8191cff04e17f0461157119b55fcc66e804550",
+  "filled_screenshot": "D:\\fanqie-novel\\daily_output\\publish_logs\\2026-05-06_205658_chapter_030_filled.png",
+  "first_submit_click": "下一步",
+  "submitted_screenshot": "D:\\fanqie-novel\\daily_output\\publish_logs\\2026-05-06_205658_chapter_030_submitted.png"
+}
