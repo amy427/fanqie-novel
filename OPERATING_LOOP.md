@@ -1,203 +1,147 @@
 # OPERATING_LOOP
 
-当前版本日期：2026-05-06
+Current version date: 2026-05-08
 
-## 1. 每章生产闭环
+## 1. Closed Loop
 
-每章按以下闭环运行：
-
-```text
-状态检查
-↓
-章节任务
-↓
-正文生产或修订
-↓
-质量检查
-↓
-市场包装
-↓
-发布准备
-↓
-归档同步
-↓
-复盘记录
-↓
-下一章钩子
-```
-
-## 2. 阶段 1：状态检查
-
-岗位：项目经理
-
-必须检查：
-
-1. 当前章号。
-2. 前一章是否归档。
-3. 前一章摘要是否存在。
-4. 前一章 QA 是否存在。
-5. 当前章是否已有剧情钩子、草稿、发布版、质检报告。
-6. 是否存在 `chapters/`、`chapter_summaries/`、`daily_output/` 编号不一致。
-7. 本轮目标是开写、修订、质检、归档还是发布。
-
-输出建议：
+Each routine run follows this loop:
 
 ```text
-daily_output/第NNN章_生产流程记录.md
+state check
+-> target decision
+-> input reading
+-> chapter generation or repair
+-> QA
+-> market/publish packaging
+-> formal archive
+-> continuity update
+-> feedback query
+-> Fanqie publish if authorized
+-> Git commit and push
+-> next hook and run state
 ```
 
-## 3. 阶段 2：章节任务
+## 2. State Check
 
-岗位：主编
+Required checks:
 
-必须明确：
+1. Current working directory is `D:\fanqie-novel`.
+2. Git worktree status.
+3. Latest formal chapter in `chapters/`.
+4. Latest formal summary in `chapter_summaries/`.
+5. Pending publish-ready daily output.
+6. Latest QA report.
+7. Latest next-chapter hook.
+8. CDP state if feedback query or publishing is requested.
 
-1. 开头冲突。
-2. 核心规则冲突。
-3. 江彻主动选择。
-4. 本章爽点。
-5. 本章代价。
-6. 需要回收或推进的伏笔。
-7. 章末钩子。
+Output:
 
-禁止：
+- Update `automation/run_state.md`.
+- Add a dated note to `decision_log/DECISION_LOG.md` when the state changes.
 
-1. 只给气氛，不给操作目标。
-2. 只给情绪，不给规则冲突。
-3. 让主角被动等救援。
+## 3. Target Decision
 
-## 4. 阶段 3：正文生产或修订
+Default target is latest formal chapter + 1.
 
-岗位：作者
+Stop if:
 
-写作规则：
+1. Target formal chapter already exists.
+2. Target summary already exists.
+3. A newer daily output is publish-ready but not archived.
+4. There is a run lock at `daily_output/.run_lock`.
 
-1. 先承接上一章最后一个动作或钩子。
-2. 用现场规则推动冲突，不用旁白解释替代行动。
-3. 江彻每一次反制都要有依据和代价。
-4. 第二列字不能直接给完整答案。
-5. 关键物件状态要连续。
-6. 短段落、高压力、少抽象形容。
+## 4. Input Reading
 
-默认产物：
+Read in priority order:
 
-```text
-daily_output/第NNN章_正文草稿.md
-```
+1. Latest 3 formal chapters.
+2. `07_长篇控制设定表_canvas.md`.
+3. Recent chapter summaries.
+4. Continuity files under `continuity/`.
+5. Relevant QA and hook files under `daily_output/`.
+6. Core canon files `00_*.md` through `06_*.md`.
+7. Feedback files under `feedback/`.
 
-通过后可生成：
+## 5. Generation
 
-```text
-daily_output/第NNN章_完整正文.md
-daily_output/第NNN章_番茄发布版.txt
-```
+Generate only the target chapter.
 
-## 5. 阶段 4：质量检查
+Rules:
 
-岗位：QA
+1. 4000 to 5000 non-whitespace body characters.
+2. Open directly in conflict.
+3. Keep paragraphs short.
+4. No blank lines in formal prose or Fanqie publish text.
+5. Rule conflict drives payoff.
+6. 江彻 must choose, pay, and push the scene.
+7. No free cheat.
+8. No unauthorized major setting expansion.
 
-检查项目：
+## 6. QA
 
-1. 字数。
-2. 是否承接上一章。
-3. 是否承接设定文件。
-4. 是否有开头冲突。
-5. 是否有中段压迫。
-6. 是否有主角主动决策。
-7. 是否有明确爽点。
-8. 是否有明确代价。
-9. 是否有章末钩子。
-10. 是否新增重大世界观设定。
-11. 是否出现无代价外挂。
-12. 是否存在设定冲突。
-13. 是否建议人工发布。
-14. 是否需要更新伏笔表或角色表。
+Run `automation/quality_gates.md`.
 
-默认产物：
+If QA fails:
 
-```text
-daily_output/第NNN章_质检报告.md
-daily_output/第NNN章_伏笔更新建议.md
-```
+1. Rewrite once.
+2. Re-run QA.
+3. If still failing, do not archive.
+4. Keep failed draft, QA report, and dry-run log in `daily_output/`.
 
-## 6. 阶段 5：市场包装
+If QA passes:
 
-岗位：销售 / 市场
+1. Write formal chapter to `chapters/`.
+2. Write summary to `chapter_summaries/`.
+3. Write publish version and checklist to `daily_output/`.
 
-检查项目：
+## 7. Feedback
 
-1. 标题是否有冲突感或悬念。
-2. 开头是否能立刻让读者进入危险。
-3. 爽点是否清晰可感。
-4. 章末是否能制造下一章点击。
-5. 是否有适合后续简介、短视频、评论区引导的卖点句。
+Run feedback query only when CDP page is verified as Fanqie analytics or comments.
 
-默认产物：
+If unavailable:
 
-```text
-daily_output/第NNN章_市场包装建议.md
-```
+1. Log the skip reason in `feedback/query_log.md`.
+2. Continue local production.
 
-## 7. 阶段 6：发布准备
+## 8. Publish
 
-岗位：运营 / 发布
+Publish only through `tools/fanqie_safe_publish.py`.
 
-必须检查：
+Before publishing:
 
-1. 番茄发布版是否存在。
-2. 发布版是否无空白行。
-3. 标题是否确认。
-4. 是否已人工确认发布。
-5. 使用 `tools/` 前是否确认浏览器页面。
+1. Ensure `feedback/source_config.md` contains `auto_publish_external: true`.
+2. Ensure CDP is reachable at `http://127.0.0.1:9222`.
+3. If not reachable, run `tools/fanqie_start_cdp_chrome.ps1`.
+4. Ensure the target publish file exists.
 
-默认产物：
+Fanqie field split:
 
-```text
-daily_output/第NNN章_发布检查清单.md
-```
+1. Chapter number field between `第` and `章`: Arabic digits only.
+2. Title field after `章`: chapter title only.
 
-## 8. 阶段 7：归档同步
+## 9. Versioning
 
-岗位：项目经理 + 设定管理员
-
-章节接受后同步：
-
-1. `chapters/第NNN章_全文.md`
-2. `chapter_summaries/第NNN章_摘要.md`
-3. `daily_output/第NNN章_剧情钩子.md` 为下一章准备。
-4. 必要时更新核心设定表。
-
-同步原则：
-
-1. 不删除草稿。
-2. 不覆盖发布版。
-3. 不创建重复设定笔记，优先更新既有表。
-
-## 9. 阶段 8：复盘记录
-
-岗位：项目经理
-
-记录：
-
-1. 本章完成状态。
-2. 本章最有效的规则冲突。
-3. 本章遗留风险。
-4. 下一章优先任务。
-5. 是否需要 Git 提交和推送。
-
-建议每次完整闭环后执行：
+After successful operational changes:
 
 ```powershell
 git status --short --branch
-git add .
-git commit -m "完成第NNN章生产流程"
+git add <changed files>
+git commit -m "Update project operating system"
 git push
 ```
 
-## 10. 快速运行命令
+Never use `git reset --hard`.
 
-```text
-运行小说生产流程。
-目标：推进第NNN章。
-本轮只做：状态检查 / 章节任务 / 正文修订 / QA / 市场包装 / 发布准备 / 归档同步。
-```
+## 10. Final Reply
+
+Do not paste chapter prose.
+
+Report only:
+
+1. Current project state.
+2. What changed.
+3. Key files updated.
+4. QA result.
+5. Git commit/push result.
+6. Remaining gaps.
+7. Next best action.

@@ -1,21 +1,21 @@
 # Daily Chapter Run
 
-Current version date: 2026-05-06
+Current version date: 2026-05-08
 
 ## Purpose
 
-Run a local dry run that generates the next chapter after the latest formal chapter, then archives it only if it passes quality gates.
+Generate and process exactly one next chapter after the latest formal chapter, then archive and publish it only if it passes quality gates.
 
-This is a daily automation instruction file. It should be read together with:
+Read together with:
 
-1. `automation/safety_rules.md`
-2. `automation/chapter_generation_spec.md`
-3. `automation/quality_gates.md`
-4. `automation/run_state.md`
-5. `automation/auto_decision_policy.md`
-6. `automation/feedback_query.md`
-7. `NOVEL_OS.md`
-8. `OPERATING_LOOP.md`
+1. `PROJECT_OS.md`
+2. `OPERATING_LOOP.md`
+3. `automation/safety_rules.md`
+4. `automation/chapter_generation_spec.md`
+5. `automation/quality_gates.md`
+6. `automation/run_state.md`
+7. `automation/auto_decision_policy.md`
+8. `automation/feedback_query.md`
 9. `continuity/open_threads.md`
 10. `continuity/object_state.md`
 11. `continuity/character_state.md`
@@ -24,38 +24,42 @@ This is a daily automation instruction file. It should be read together with:
 ## Execution Order
 
 1. Confirm working directory is `D:\fanqie-novel`.
-2. Confirm `chapter_summaries/`, `daily_output/`, and `daily_output/automation_runs/` exist; create missing directories only.
-3. Check for `daily_output/.run_lock`; if present, stop and write only a short automation run note in `daily_output/automation_runs/`.
+2. Confirm required operational directories exist; create missing directories only.
+3. Check `daily_output/.run_lock`; if present, stop and write a run note.
 4. Scan `chapters/`, `chapter_summaries/`, and `daily_output/`.
-5. Run feedback query according to `automation/feedback_query.md`; if unavailable, log and continue.
-6. Determine the latest formal chapter by `chapters/第XXX章_全文.md`.
-7. Check whether any `daily_output/第YYY章_质检报告.md` for a chapter newer than the latest formal chapter says `是否建议人工发布：是`.
-8. If such a newer publish-ready chapter exists, archive it automatically before generating later chapters, as long as target formal files do not already exist.
-9. If no pending publish-ready chapter exists, target chapter is latest formal chapter number + 1.
-10. If target formal chapter or target summary already exists, stop. Do not overwrite.
-11. Read required canon, summaries, recent chapters, feedback, and continuity files according to `chapter_generation_spec.md`.
-12. Generate target chapter into daily output first.
-13. Run quality gates.
-14. If pass, write formal chapter and formal summary automatically.
-15. If fail, keep only daily output draft, QA report, and dry-run log.
-16. Generate required `daily_output` artifacts.
-17. Update `continuity/`, `decision_log/`, `feedback/`, `automation/run_index.md`, and `automation/run_state.md`.
-18. If `feedback/source_config.md` contains `auto_publish_external: true`, publish the passed chapter through the safe publisher.
+5. Determine latest formal chapter by `chapters/第XXX章_全文.md`.
+6. If a publish-ready pending chapter newer than latest formal exists, archive it first if safe.
+7. Otherwise target latest formal chapter + 1.
+8. Stop if target formal chapter or summary already exists.
+9. Read canon, recent chapters, summaries, feedback, and continuity.
+10. Generate target chapter into `daily_output/` first.
+11. Run quality gates.
+12. If needed, rewrite once and re-run quality gates.
+13. If pass, write formal chapter and formal summary.
+14. If fail, do not archive; keep draft, QA, and dry-run log.
+15. Generate required daily output artifacts.
+16. Update continuity, decision log, feedback notes, run index, and run state.
+17. Run feedback query if a verified analytics/comments CDP page is open.
+18. If `auto_publish_external: true`, run the safe publisher.
 19. Write dry-run log.
-20. Commit changes locally when files were created.
-21. Push to GitHub after commit unless network is unavailable.
+20. Commit local changes.
+21. Push to GitHub after commit unless unavailable.
 
 ## Automatic External Publish Step
 
-Only run after the target chapter has passed QA and the target publish file exists.
-
-Command format:
+Before publishing, ensure CDP is available:
 
 ```powershell
-python tools/fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --open-publish-page --create-chapter --auto-submit
+powershell -ExecutionPolicy Bypass -File tools\fanqie_start_cdp_chrome.ps1
 ```
 
-If CDP is unavailable, login has expired, the page cannot be verified, or the publisher fails validation, record the failure in `daily_output/publish_logs/` and continue the local archive/commit flow. Do not retry in a loop.
+Publish command:
+
+```powershell
+python tools\fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --open-publish-page --create-chapter --auto-submit
+```
+
+If CDP is unavailable, login has expired, the page cannot be verified, or publisher validation fails, record the failure in `daily_output/publish_logs/` and continue the local archive/commit flow. Do not retry indefinitely.
 
 ## Required Daily Output Files
 
@@ -91,3 +95,4 @@ Report only:
 6. Missing files, if any.
 7. Whether automatic rewrite was triggered.
 8. Whether local dry run completed.
+9. Whether Fanqie publish was attempted and its result.

@@ -1,26 +1,53 @@
 # Run State
 
-Last updated: 2026-05-07
+Last updated: 2026-05-08
 
 ## Current Formal State
 
 - Latest formal chapter detected in `chapters/`: 第031章
 - Latest formal summary detected in `chapter_summaries/`: 第031章
-- Current publish-ready daily output: none beyond formal archive
-- 第031章 status: archived to `chapters/` and `chapter_summaries/`
+- Current publish-ready daily output beyond formal archive: none detected
+- Next routine chapter target: 第032章
 
-## Automation Decision
+## Current Automation State
 
-Daily chapter generation may now target 第032章.
+- Local dry-run generation: enabled
+- Formal archive after QA pass: enabled
+- Git commit and push after completed runs: enabled
+- Feedback query: enabled when CDP page is verified as Fanqie analytics/comments
+- External Fanqie publishing: enabled by `feedback/source_config.md`
+- CDP endpoint: `http://127.0.0.1:9222`
 
-Routine human confirmation gates remain disabled for local repository operations. Feedback query can now start; the latest run skipped because the current CDP page is a Fanqie publish page rather than a verified analytics/comments page. Automatic Fanqie publishing for 第031章 completed through the required safe-publisher command with `submitted: true`; the submitted-page screenshot still timed out, but the JSON audit record was written.
+## Current Publish Guard
+
+Use:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\fanqie_start_cdp_chrome.ps1
+python tools\fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --open-publish-page --create-chapter --auto-submit
+```
+
+Fanqie field split:
+
+- Chapter number field: Arabic digits only, for example `32`.
+- Chapter title field: title only, for example `地下钟室下层`.
 
 ## Next Human Gate
 
-Recommended next step:
+Routine human confirmation gates remain disabled because the user requested unattended automation.
+
+Stop only if:
+
+1. Target files already exist.
+2. QA fails after one rewrite.
+3. CDP cannot start or connect.
+4. Fanqie login/session is invalid.
+5. Fanqie page cannot be verified.
+6. Safe publisher cannot verify filled content.
+7. Git push fails.
+
+## Recommended Next Step
 
 ```text
-运行小说生产流程。目标：推进第032章。
+运行小说生产流程。目标：推进第032章。按 PROJECT_OS 和 OPERATING_LOOP 执行。
 ```
-
-第032章必须承接房号900、地下钟室下层门缝、红绳牵住江彻掌心伤口、观察席剩余约八分钟、城防要求提交气血值，以及齐子衡作为未完成登记人敲门后的风险。

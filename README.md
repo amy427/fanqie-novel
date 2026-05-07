@@ -1,78 +1,70 @@
 # Fanqie Novel Workspace
 
-This workspace contains the long-form web novel project `高武：违规者才配活着`.
+This repository contains the long-form web novel production system for `高武：违规者才配活着`.
 
 ## Project Snapshot
 
-- Title: `高武：违规者才配活着`
-- Pen name: `饮血独行`
-- Genre: urban male-frequency fiction, high martial arts, rule-horror, dungeon suspense, progression, class reversal
-- Current protagonist: `江彻`
-- Core publishing target: long-running Fanqie serial, strong retention in the first 20 chapters, scalable beyond 200 chapters
-- Current story phase as of 2026-04-29: volume 2, chapters 21-30, finishing the second half of the `旧河公寓` arc before moving into black-market martial qualification
+- Project type: Fanqie web novel production workspace.
+- Core goal: produce, QA, archive, publish, and improve a long-running rule-horror urban high-martial-arts serial.
+- Protagonist: 江彻.
+- Current formal archive as of 2026-05-08: 第031章.
+- Next routine target: 第032章.
+- GitHub remote: `https://github.com/amy427/fanqie-novel.git`.
 
 ## Directory Map
 
 - `00_世界观设定.md` through `07_长篇控制设定表_canvas.md`: core canon and long-form control documents.
-- `chapters/`: formal chapter archive. It currently contains chapters 001-021 and chapter 024.
-- `chapter_summaries/`: chapter summaries. It currently contains summaries for chapters 001-020 and chapter 024.
-- `daily_output/`: daily generation artifacts, including full drafts, Fanqie publish versions, QA reports, foreshadowing suggestions, and hooks for chapters 021-025.
-- `tools/`: Playwright helper scripts for navigating and publishing in the Fanqie author interface through an existing Chromium CDP session.
-- `agent-memory-starter/`: local personal/project memory template for preserving user profile, principles, tasks, and daily logs.
-- `.pw-fanqie-profile/`: browser profile data for Fanqie automation. Treat as local state.
-- `123/`: empty trusted Codex workspace folder as of 2026-04-29.
+- `chapters/`: formal chapter archive. Do not overwrite existing files.
+- `chapter_summaries/`: formal chapter summaries. Do not overwrite existing files.
+- `daily_output/`: daily generation artifacts, QA reports, publish versions, dry-run logs, hooks, and publish logs.
+- `automation/`: repeatable production rules, quality gates, safety rules, and current run state.
+- `continuity/`: active story state for open threads, objects, characters, and rules.
+- `feedback/`: reader metrics, query configuration, comments, and performance notes.
+- `tools/`: Fanqie CDP helpers and safe publish tooling.
+- `decision_log/`: dated project decisions.
+- `weekly_review/`: periodic review notes.
+- `.pw-fanqie-profile/`: local Chrome profile for Fanqie automation. Ignored by Git.
 
-## Current Chapter State
+## Operating Entry Points
 
-- Chapter 024 is the latest formally archived chapter in `chapters/`.
-- `daily_output/第025章_剧情钩子.md` contains the next planning material.
-- `daily_output/第022章_完整正文.md` and `daily_output/第023章_完整正文.md` exist, but matching formal archives and summaries are not present in `chapters/` or `chapter_summaries/` as of 2026-04-29.
+Read these before running the project:
 
-Before continuing chapter 025, decide whether to backfill chapter 022 and chapter 023 into the formal archive and summary folders.
+1. `PROJECT_OS.md`
+2. `OPERATING_LOOP.md`
+3. `AGENTS.md`
+4. `automation/run_state.md`
+5. `automation/daily_chapter_run.md`
+6. `tools/FANQIE_SAFE_TOOLS.md`
 
-## Writing Rules
+## Daily Chapter Flow
 
-- Do not rely on vague emotion words, routine shock reactions, or repeated mechanical power fantasy beats.
-- Push scenes through rules, space, action, judgment, cost, and concrete consequence.
-- The protagonist should solve problems through rule conflicts and active decisions, not free external cheats.
-- Every major gain should carry an explicit cost, especially through recognition-line pollution, object damage, identity risk, or relationship risk.
-- Maintain short paragraphs, high pressure, clear chapter hooks, and rule-based reversals.
+1. Detect latest formal chapter in `chapters/`.
+2. Target only latest formal chapter + 1.
+3. Read canon, recent chapters, summaries, continuity, and feedback.
+4. Generate daily artifacts first under `daily_output/`.
+5. Run QA and rewrite once if quality gates fail.
+6. Archive to `chapters/` and `chapter_summaries/` only when QA passes.
+7. Update continuity, run state, feedback notes, and decision logs.
+8. If `auto_publish_external: true`, publish through the safe publisher.
+9. Commit and push when the run changes files.
 
-## Chapter Workflow
+## Fanqie CDP Publishing
 
-1. Read the relevant canon files before drafting:
-   - `00_世界观设定.md`
-   - `02_角色关系表.md`
-   - `03_伏笔回收表.md`
-   - `06_每卷主线目标.md`
-   - `07_长篇控制设定表_canvas.md`
-2. Read the previous chapter and its summary.
-3. Draft into `daily_output/第NNN章_完整正文.md`.
-4. Produce or update:
-   - `daily_output/第NNN章_质检报告.md`
-   - `daily_output/第NNN章_伏笔更新建议.md`
-   - `daily_output/第NNN章_发布检查清单.md`
-   - `daily_output/第NNN章_剧情钩子.md` for the next chapter
-5. If the chapter passes QA, archive it to `chapters/` and create/update the matching file in `chapter_summaries/`.
-
-## Fanqie Automation Notes
-
-The scripts in `tools/` assume Chromium is already running with CDP available at `http://127.0.0.1:9222`.
-
-Common flow:
+Start or verify CDP Chrome:
 
 ```powershell
-python tools/fanqie_open_publish_page.py
-python tools/fanqie_fill_chapter.py
-python tools/fanqie_submit_until_done.py
-python tools/fanqie_verify_published.py
+powershell -ExecutionPolicy Bypass -File tools\fanqie_start_cdp_chrome.ps1
 ```
 
-Inspect script contents before use, because several scripts operate on the most recent browser page in the connected Chromium context.
+Safe publisher:
 
-## Handoff Notes
+```powershell
+python tools\fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --open-publish-page --create-chapter --auto-submit
+```
 
-- This is not a Git repository as of 2026-04-29.
-- Treat all Markdown canon files as source-of-truth story documents.
-- Do not overwrite user-authored chapter files without checking the matching daily output, QA report, and summary state.
-- Keep absolute dates in handoff notes. Avoid vague relative time labels.
+Important editor rule:
+
+- Chapter number field: Arabic digits only, such as `32`.
+- Title field: title only, such as `地下钟室下层`.
+
+Logs and screenshots are stored in `daily_output/publish_logs/`.

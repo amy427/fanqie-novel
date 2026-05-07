@@ -1,20 +1,20 @@
 # Quality Gates
 
-Current version date: 2026-05-06
+Current version date: 2026-05-08
 
 ## Automatic Rewrite Triggers
 
 Rewrite once, and only once, if any of these are true:
 
-1. Body is under 4000 characters or over 5000 characters.
+1. Body is under 4000 or over 5000 non-whitespace characters.
 2. First 300 characters do not contain immediate conflict.
 3. No clear rule-based payoff.
 4. No clear ending hook.
 5. 江彻 passively waits for more than half the chapter.
 6. A free cheat or no-cost power gain appears.
 7. Exposition replaces action for too much of the chapter.
-8. Chapter contradicts the previous ending.
-9. Formal prose or publish text contains blank lines.
+8. Chapter contradicts the previous ending or required hook.
+9. Formal prose, backup prose, or Fanqie publish text contains blank lines.
 
 Do not rewrite infinitely.
 
@@ -22,8 +22,8 @@ Do not rewrite infinitely.
 
 Final chapter may be archived only when all are true:
 
-1. 4000 to 5000 body characters.
-2. No blank lines in formal prose and publish text.
+1. 4000 to 5000 non-whitespace body characters.
+2. No blank lines in formal prose, backup prose, and publish text.
 3. Opens with conflict.
 4. Has middle pressure escalation.
 5. 江彻 makes active tactical choices.
@@ -32,7 +32,7 @@ Final chapter may be archived only when all are true:
 8. Has a strong chapter ending hook.
 9. No major unauthorized setting expansion.
 10. No no-cost cheat.
-11. QA report says `是否建议人工发布：是`.
+11. QA report says publish is recommended.
 
 ## Required QA Report Sections
 
@@ -51,7 +51,7 @@ Final chapter may be archived only when all are true:
 11. 是否出现无代价外挂
 12. 是否存在设定冲突
 13. 风格贴合度评分，满分10分
-14. 是否建议人工发布
+14. 是否建议发布
 15. 是否触发自动重写
 16. 是否已正式归档到 chapters
 17. 是否已生成摘要到 chapter_summaries
@@ -71,10 +71,27 @@ Final chapter may be archived only when all are true:
 7. 输出文件列表
 8. 正式正文是否写入 chapters
 9. 正式摘要是否写入 chapter_summaries
-10. 是否联网：否
-11. 是否打开浏览器：否
-12. 是否访问番茄后台：否
-13. 是否发布：否
-14. 是否上传：否
-15. 是否修改旧章节：否
-16. 执行模式：本地干跑
+10. 是否联网
+11. 是否打开浏览器
+12. 是否访问番茄后台
+13. 是否发布
+14. 是否上传
+15. 是否修改旧章节
+16. 执行模式
+
+## Publish Checklist Sections
+
+`daily_output/第XXX章_发布检查清单.md` must include:
+
+1. 今日目标章节编号
+2. 正文字数
+3. 是否有明显错别字
+4. 是否有敏感词风险
+5. 是否承接上一章
+6. 是否有章末钩子
+7. 正文和番茄发布版是否无空白行
+8. 是否建议发布
+9. 正式正文路径
+10. 正式摘要路径
+11. Fanqie 自动发布状态
+12. Fanqie 发布日志路径

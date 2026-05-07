@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-05-08_003323",
+  "mode": "dry-run",
+  "file": "daily_output\\第031章_番茄发布版.txt",
+  "expected_chapter": 31,
+  "title": "第031章 下层敲门",
+  "chapter_title_field": "下层敲门",
+  "body_non_whitespace_chars": 4280,
+  "sha256": "6ae3eb580a03f3de15482188506315bd0d6065b9c7159257cf4c95f991287337",
+  "url": "https://fanqienovel.com/main/writer/chapter-manage/7628203489469942846&%E9%AB%98%E6%AD%A6%EF%BC%9A%E8%BF%9D%E8%A7%84%E8%80%85%E6%89%8D%E9%85%8D%E6%B4%BB%E7%9D%80?type=1",
+  "page_title": "作家专区-番茄小说网-番茄小说旗下原创文学平台",
+  "verified_page": true,
+  "auto_submit": false,
+  "opened_publish_page": false,
+  "new_page": false,
+  "page_url_contains": "",
+  "create_chapter_requested": false,
+  "filled": false,
+  "submitted": false,
+  "screenshot": "D:\\fanqie-novel\\daily_output\\publish_logs\\2026-05-08_003323_chapter_031_precheck.png",
+  "screenshot_fallback": "viewport"
+}

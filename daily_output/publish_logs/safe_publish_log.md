@@ -161,3 +161,75 @@ RuntimeError: Final publish confirmation button not found
 - JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-07_191914_chapter_030_safe_publish.json`
 - Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-07_191914_chapter_030_precheck.png`
 - Submitted: `True`
+
+## 2026-05-08_003034 safe publish failed before completion
+- Result: `failed`
+- Error: `Error: BrowserType.connect_over_cdp: connect ECONNREFUSED 127.0.0.1:9223
+Call log:
+  - <ws preparing> retrieving websocket url from http://127.0.0.1:9223
+`
+- Traceback:
+```text
+Traceback (most recent call last):
+  File "D:\fanqie-novel\tools\fanqie_safe_publish.py", line 360, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "D:\fanqie-novel\tools\fanqie_safe_publish.py", line 211, in main
+    browser, page = get_page(p, args.new_page, args.page_url_contains)
+                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\fanqie-novel\tools\fanqie_safe_publish.py", line 170, in get_page
+    return get_last_page(playwright)
+  File "D:\fanqie-novel\tools\fanqie_common.py", line 70, in get_last_page
+    browser = playwright.chromium.connect_over_cdp(CDP_URL)
+  File "C:\Users\26030\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\sync_api\_generated.py", line 14969, in connect_over_cdp
+    self._sync(
+    ~~~~~~~~~~^
+        self._impl_obj.connect_over_cdp(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+        )
+        ^
+    )
+    ^
+  File "C:\Users\26030\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_sync_base.py", line 115, in _sync
+    return task.result()
+           ~~~~~~~~~~~^^
+  File "C:\Users\26030\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_browser_type.py", line 206, in connect_over_cdp
+    response = await self._channel.send_return_as_dict(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "connectOverCDP", TimeoutSettings.launch_timeout, params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\26030\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_connection.py", line 83, in send_return_as_dict
+    return await self._connection.wrap_api_call(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "C:\Users\26030\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\playwright\_impl\_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.Error: BrowserType.connect_over_cdp: connect ECONNREFUSED 127.0.0.1:9223
+Call log:
+  - <ws preparing> retrieving websocket url from http://127.0.0.1:9223
+```
+
+## 2026-05-08_003059 chapter 031 safe publish
+- Mode: `dry-run`
+- Title: `第031章 下层敲门`
+- Chapter title field: `下层敲门`
+- SHA256: `6ae3eb580a03f3de15482188506315bd0d6065b9c7159257cf4c95f991287337`
+- Verified page: `True`
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-08_003059_chapter_031_safe_publish.json`
+- Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-08_003059_chapter_031_precheck.png`
+- Submitted: `False`
+
+## 2026-05-08_003323 chapter 031 safe publish
+- Mode: `dry-run`
+- Title: `第031章 下层敲门`
+- Chapter title field: `下层敲门`
+- SHA256: `6ae3eb580a03f3de15482188506315bd0d6065b9c7159257cf4c95f991287337`
+- Verified page: `True`
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-08_003323_chapter_031_safe_publish.json`
+- Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-08_003323_chapter_031_precheck.png`
+- Submitted: `False`

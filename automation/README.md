@@ -1,19 +1,37 @@
-# automation
+# Automation
 
 This folder turns the long daily-generation prompt into a maintainable local operating system.
 
-Core idea:
+## Core Rules
 
 1. `chapters/` is the only source for completed formal chapters.
 2. `daily_output/` may contain publish-ready work, but it is not formal until archived.
 3. Daily automation must pass safety checks before writing any formal chapter or summary.
 4. Failed runs stay in `daily_output/` and must not touch `chapters/` or `chapter_summaries/`.
-5. Existing old chapters, summaries, and canon files are never overwritten.
+5. Existing old chapters, summaries, canon files, QA reports, publish versions, and drafts are never overwritten.
+6. External publishing is allowed only through `tools/fanqie_safe_publish.py`.
 
-Files:
+## Files
 
 - `daily_chapter_run.md`: daily automation task.
 - `chapter_generation_spec.md`: chapter generation and output rules.
 - `quality_gates.md`: pass/fail checks before formal archival.
-- `safety_rules.md`: filesystem and overwrite protections.
+- `safety_rules.md`: filesystem, CDP, publish, and Git protections.
 - `run_state.md`: current automation state snapshot.
+- `run_index.md`: historical run index.
+- `feedback_query.md`: feedback query rules.
+- `auto_decision_policy.md`: unattended decision policy.
+
+## Current Entry
+
+Routine continuation:
+
+```text
+运行小说生产流程。目标：推进第032章。按 PROJECT_OS 和 OPERATING_LOOP 执行。
+```
+
+CDP startup:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\fanqie_start_cdp_chrome.ps1
+```

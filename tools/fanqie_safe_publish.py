@@ -29,23 +29,23 @@ from fanqie_common import (
 RUN_LOG = Path(r"D:\fanqie-novel\daily_output\publish_logs\safe_publish_log.md")
 
 
-def find_title_input(page):
-    candidates = [
-        page.locator("input[placeholder*='标题']").first,
-        page.locator("textarea[placeholder*='标题']").first,
-        page.locator("input").first,
-    ]
-    for locator in candidates:
-        try:
-            if locator.count() and locator.first.is_visible(timeout=2000):
-                return locator.first
-        except Exception:
-            continue
-    raise RuntimeError("Title input not found")
+TEXT_CREATE_CHAPTER = "\u521b\u5efa\u7ae0\u8282"
+TEXT_KNOW = "\u77e5\u9053\u4e86"
+TEXT_I_KNOW = "\u6211\u77e5\u9053\u4e86"
+TEXT_OK = "\u786e\u5b9a"
+TEXT_PUBLISH = "\u53d1\u5e03"
+TEXT_NEXT = "\u4e0b\u4e00\u6b65"
+TEXT_CONFIRM_PUBLISH = "\u786e\u8ba4\u53d1\u5e03"
+TEXT_CONFIRM_SUBMIT = "\u786e\u8ba4\u63d0\u4ea4"
+TEXT_SUBMIT = "\u63d0\u4ea4"
+TEXT_CONFIRM = "\u786e\u8ba4"
+PLACEHOLDER_TITLE = "\u6807\u9898"
+PLACEHOLDER_BODY = "\u6b63\u6587"
 
 
 def split_chapter_title(title: str) -> tuple[int | None, str]:
-    match = re.search(r"第\s*0*(\d+)\s*章\s*(.*)", title)
+    """Return (chapter number, title without `第XXX章`)."""
+    match = re.search(r"\u7b2c\s*0*(\d+)\s*\u7ae0\s*(.*)", title)
     if not match:
         return None, title.strip()
     chapter_no = int(match.group(1))
@@ -54,7 +54,9 @@ def split_chapter_title(title: str) -> tuple[int | None, str]:
 
 
 def find_chapter_number_input(page):
+    """Fanqie editor has a separate Arabic-number field between `第` and `章`."""
     candidates = [
+        page.locator("input.serial-input.byte-input").nth(0),
         page.locator("input.serial-input").nth(0),
         page.locator("input[type='text']").first,
     ]
@@ -67,10 +69,27 @@ def find_chapter_number_input(page):
     raise RuntimeError("Chapter number input not found")
 
 
+def find_title_input(page):
+    candidates = [
+        page.locator(f"input[placeholder*='{PLACEHOLDER_TITLE}']").first,
+        page.locator(f"textarea[placeholder*='{PLACEHOLDER_TITLE}']").first,
+        page.locator("input.serial-editor-input-hint-area").first,
+        page.locator("input").nth(1),
+    ]
+    for locator in candidates:
+        try:
+            if locator.count() and locator.first.is_visible(timeout=2000):
+                return locator.first
+        except Exception:
+            continue
+    raise RuntimeError("Title input not found")
+
+
 def find_body_editor(page):
     candidates = [
+        page.locator("[contenteditable='true'].ProseMirror").first,
         page.locator("[contenteditable='true']").first,
-        page.locator("textarea[placeholder*='正文']").first,
+        page.locator(f"textarea[placeholder*='{PLACEHOLDER_BODY}']").first,
     ]
     for locator in candidates:
         try:
@@ -82,7 +101,7 @@ def find_body_editor(page):
 
 
 def dismiss_known_overlays(page) -> None:
-    for text in ["知道了", "我知道了", "确定"]:
+    for text in [TEXT_KNOW, TEXT_I_KNOW, TEXT_OK]:
         try:
             loc = page.get_by_text(text, exact=True)
             if loc.count():
@@ -119,6 +138,7 @@ def click_modal_primary(modal, timeout: int = 10000) -> str | None:
 
 
 def select_ai_yes_if_present(modal) -> bool:
+    # Fanqie may ask whether AI was used. Value 1 is the affirmative option.
     radio = modal.locator("input[type='radio'][value='1']").first
     if radio.count() == 0:
         return False
@@ -129,21 +149,18 @@ def select_ai_yes_if_present(modal) -> bool:
     return True
 
 
-def wait_and_click_last_button_by_text(page, texts: list[str], attempts: int = 15) -> str | None:
-    for _ in range(attempts):
-        clicked = click_last_button_by_text(page, texts, timeout=3000)
-        if clicked:
-            return clicked
-        page.wait_for_timeout(1000)
-    return None
-
-
 def safe_screenshot(page, path: Path, log_data: dict, key: str) -> None:
     try:
         page.screenshot(path=str(path), full_page=True, timeout=60000)
         log_data[key] = str(path)
     except PlaywrightTimeoutError as exc:
-        log_data[f"{key}_error"] = f"{type(exc).__name__}: {exc}"
+        try:
+            page.screenshot(path=str(path), full_page=False, timeout=15000)
+            log_data[key] = str(path)
+            log_data[f"{key}_fallback"] = "viewport"
+        except PlaywrightTimeoutError as fallback_exc:
+            log_data[f"{key}_error"] = f"{type(exc).__name__}: {exc}"
+            log_data[f"{key}_fallback_error"] = f"{type(fallback_exc).__name__}: {fallback_exc}"
 
 
 def get_page(playwright, new_page: bool, page_url_contains: str = ""):
@@ -164,16 +181,16 @@ def get_page(playwright, new_page: bool, page_url_contains: str = ""):
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Safe Fanqie publish helper with dry-run default.")
-    parser.add_argument("--file", required=True, help="Path to 第XXX章_番茄发布版.txt")
+    parser.add_argument("--file", required=True, help="Path to publish text file.")
     parser.add_argument("--expected-chapter", type=int, required=True)
-    parser.add_argument("--fill", action="store_true", help="Fill title/body into current page, but do not submit.")
+    parser.add_argument("--fill", action="store_true", help="Fill chapter number/title/body, but do not submit.")
     parser.add_argument("--submit", action="store_true", help="Submit/publish after validation. Requires --fill and --confirm-submit.")
-    parser.add_argument("--auto-submit", action="store_true", help="Unattended fill+submit if auto_publish_external is true in feedback/source_config.md.")
-    parser.add_argument("--open-publish-page", action="store_true", help="Navigate to the configured Fanqie publish page before validation.")
-    parser.add_argument("--new-page", action="store_true", help="Open a new browser tab over CDP instead of reusing the last open page.")
+    parser.add_argument("--auto-submit", action="store_true", help="Unattended fill+submit if auto_publish_external is true.")
+    parser.add_argument("--open-publish-page", action="store_true", help="Navigate to configured Fanqie publish page first.")
+    parser.add_argument("--new-page", action="store_true", help="Open a new CDP tab instead of using the last page.")
     parser.add_argument("--page-url-contains", default="", help="Reuse an existing CDP page whose URL contains this text.")
-    parser.add_argument("--create-chapter", action="store_true", help="Click 创建章节 if present before filling.")
-    parser.add_argument("--confirm-submit", default="", help="Must equal expected SHA256 to allow submit.")
+    parser.add_argument("--create-chapter", action="store_true", help="Click create chapter if present before filling.")
+    parser.add_argument("--confirm-submit", default="", help="Must equal expected SHA256 to allow manual submit.")
     parser.add_argument("--allow-unverified-page", action="store_true")
     args = parser.parse_args()
 
@@ -183,9 +200,7 @@ def main() -> int:
     title, body, full_text = read_publish_file(path)
     chapter_no_from_title, chapter_title = split_chapter_title(title)
     expected_sha = sha256_text(full_text)
-    chapter_no = extract_chapter_number(title)
-    if chapter_no is None:
-        chapter_no = chapter_no_from_title
+    chapter_no = extract_chapter_number(title) or chapter_no_from_title
     if chapter_no != args.expected_chapter:
         raise SystemExit(f"Chapter mismatch: title chapter={chapter_no}, expected={args.expected_chapter}")
     if args.auto_submit:
@@ -213,7 +228,7 @@ def main() -> int:
         dismiss_known_overlays(page)
 
         if args.create_chapter:
-            create = page.get_by_text("创建章节", exact=True).first
+            create = page.get_by_text(TEXT_CREATE_CHAPTER, exact=True).first
             if create.count():
                 create.click(timeout=15000)
                 try:
@@ -236,6 +251,7 @@ def main() -> int:
             "file": str(path),
             "expected_chapter": args.expected_chapter,
             "title": title,
+            "chapter_title_field": chapter_title,
             "body_non_whitespace_chars": len("".join(body.split())),
             "sha256": expected_sha,
             "url": url,
@@ -266,9 +282,8 @@ def main() -> int:
             editor.fill(body)
             page.wait_for_timeout(1000)
             number_value = number_input.input_value(timeout=10000)
-            title_value = title_input.input_value(timeout=10000) if hasattr(title_input, "input_value") else ""
+            title_value = title_input.input_value(timeout=10000)
             editor_text = editor.inner_text(timeout=10000)
-            filled_sha = sha256_text(f"第{number_value.strip()}章 {title_value.strip()}\n{editor_text.strip()}")
             if number_value.strip() != str(args.expected_chapter):
                 raise RuntimeError("Filled chapter number verification failed")
             if title_value.strip() != chapter_title:
@@ -276,13 +291,15 @@ def main() -> int:
             if "".join(editor_text.split()) != "".join(body.split()):
                 raise RuntimeError("Filled body verification failed")
             log_data["filled"] = True
-            log_data["filled_sha256"] = filled_sha
+            log_data["filled_sha256"] = sha256_text(
+                f"\u7b2c{number_value.strip()}\u7ae0 {title_value.strip()}\n{editor_text.strip()}"
+            )
             filled_screenshot = PUBLISH_LOG_DIR / f"{stamp}_chapter_{args.expected_chapter:03d}_filled.png"
             safe_screenshot(page, filled_screenshot, log_data, "filled_screenshot")
 
         if args.submit:
             dismiss_known_overlays(page)
-            clicked = click_last_button_by_text(page, ["发布", "下一步"])
+            clicked = click_last_button_by_text(page, [TEXT_PUBLISH, TEXT_NEXT])
             if clicked is None:
                 raise RuntimeError("Publish/next button not found")
             log_data["first_submit_click"] = clicked
@@ -303,11 +320,14 @@ def main() -> int:
                 log_data["confirm_submit_click"] = confirm_clicked
                 log_data["submitted"] = True
             else:
-                second_clicked = click_last_button_by_text(page, ["确认发布", "确认提交", "提交", "发布", "确认", "确定"])
+                second_clicked = click_last_button_by_text(
+                    page,
+                    [TEXT_CONFIRM_PUBLISH, TEXT_CONFIRM_SUBMIT, TEXT_SUBMIT, TEXT_PUBLISH, TEXT_CONFIRM, TEXT_OK],
+                )
                 if second_clicked:
                     log_data["second_submit_click"] = second_clicked
                     log_data["submitted"] = True
-                elif clicked == "发布":
+                elif clicked == TEXT_PUBLISH:
                     log_data["submitted"] = True
                 else:
                     raise RuntimeError("Final publish confirmation button not found")
@@ -323,6 +343,7 @@ def main() -> int:
             [
                 f"- Mode: `{log_data['mode']}`",
                 f"- Title: `{title}`",
+                f"- Chapter title field: `{chapter_title}`",
                 f"- SHA256: `{expected_sha}`",
                 f"- Verified page: `{verified}`",
                 f"- JSON: `{json_path}`",
@@ -332,6 +353,7 @@ def main() -> int:
         )
         print("MODE:", log_data["mode"])
         print("TITLE:", title)
+        print("CHAPTER_TITLE_FIELD:", chapter_title)
         print("SHA256:", expected_sha)
         print("JSON:", json_path)
         print("SCREENSHOT:", screenshot_path)
@@ -351,7 +373,7 @@ if __name__ == "__main__":
             RUN_LOG,
             f"{stamp} safe publish failed before completion",
             [
-                f"- Result: `failed`",
+                "- Result: `failed`",
                 f"- Error: `{type(exc).__name__}: {exc}`",
                 "- Traceback:",
                 "```text",
