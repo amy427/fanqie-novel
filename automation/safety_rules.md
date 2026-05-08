@@ -46,6 +46,19 @@ Before feedback query or publishing:
 3. If still unavailable, log failure and stop external work.
 4. Do not assume the last browser tab is correct; safe tools must verify page identity.
 
+## Browser Bridge Guard
+
+`automation/browser_bridge.md` defines the optional Codex Chrome extension / `@chrome` workflow.
+
+Use it only for:
+
+1. Login/session checks.
+2. Read-only page inspection.
+3. Publish failure diagnosis.
+4. Identifying changed Fanqie UI text or button order.
+
+Do not use `@chrome` as the unattended external publishing mechanism. If the browser bridge reveals a repeatable UI change, patch `tools/fanqie_safe_publish.py` and keep JSON logs and screenshots under `daily_output/publish_logs/`.
+
 ## Fanqie Publish Guard
 
 Use only:

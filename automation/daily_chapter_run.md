@@ -16,10 +16,11 @@ Read together with:
 6. `automation/run_state.md`
 7. `automation/auto_decision_policy.md`
 8. `automation/feedback_query.md`
-9. `continuity/open_threads.md`
-10. `continuity/object_state.md`
-11. `continuity/character_state.md`
-12. `continuity/rules_state.md`
+9. `automation/browser_bridge.md`
+10. `continuity/open_threads.md`
+11. `continuity/object_state.md`
+12. `continuity/character_state.md`
+13. `continuity/rules_state.md`
 
 ## Execution Order
 
@@ -60,6 +61,19 @@ python tools\fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布�
 ```
 
 If CDP is unavailable, login has expired, the page cannot be verified, or publisher validation fails, record the failure in `daily_output/publish_logs/` and continue the local archive/commit flow. Do not retry indefinitely.
+
+## Browser-Control Escalation
+
+Use `automation/browser_bridge.md` when a publish or feedback query failure needs live browser inspection.
+
+Allowed escalation:
+
+1. Run `tools\fanqie_browser_bridge_check.ps1 -StartCdp` to verify CDP, Chrome, and extension state.
+2. Use Codex Chrome / `@chrome` for read-only inspection of login state, current tab, visible dialog text, and chapter status.
+3. If a submit confirmation is already open, continue through `tools\fanqie_safe_publish.py --continue-submit`.
+4. If `@chrome` reveals a repeatable Fanqie UI change, patch the safe publisher before the next unattended run.
+
+Do not use browser-control visual clicking as the routine unattended publish mechanism.
 
 ## Required Daily Output Files
 

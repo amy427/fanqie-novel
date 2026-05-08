@@ -24,7 +24,19 @@ D:\fanqie-novel\.pw-fanqie-profile
 
 If login is expired, the script can open the page, but publishing must stop until the session is valid.
 
-## 2. Read-Only Metrics
+## 2. Browser Bridge Check
+
+Use this before escalating to Codex Chrome / `@chrome`:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools\fanqie_browser_bridge_check.ps1 -StartCdp
+```
+
+It verifies local `python`, Chrome, CDP, Fanqie CDP tabs, and whether the Codex Chrome extension is installed in known Chrome profiles.
+
+The bridge is for login checks, page inspection, and failure diagnosis. It is not the unattended publish path.
+
+## 3. Read-Only Metrics
 
 ```powershell
 python tools\fanqie_readonly_metrics.py
@@ -41,7 +53,7 @@ Behavior:
 
 If the page is not verified, it exits without saving page content unless `--allow-unverified` is passed.
 
-## 3. Safe Publish
+## 4. Safe Publish
 
 Dry-run validation:
 
@@ -73,7 +85,13 @@ Automatic publishing works only when `feedback/source_config.md` contains:
 auto_publish_external: true
 ```
 
-## 4. Fanqie Editor Field Rule
+Continue an already-started confirmation flow:
+
+```powershell
+python tools\fanqie_safe_publish.py --file daily_output\绗琗XX绔燺鐣寗鍙戝竷鐗?txt --expected-chapter XXX --page-url-contains <publish-page-id> --continue-submit
+```
+
+## 5. Fanqie Editor Field Rule
 
 Do not paste the full line `第XXX章 标题` into the title field.
 
