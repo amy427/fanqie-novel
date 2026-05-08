@@ -3,7 +3,7 @@ param(
     [switch]$OpenExtensionStore,
     [int]$Port = 9222,
     [string]$FanqieUrl = "https://fanqienovel.com/main/writer/7628203489469942846/publish/?enter_from=newchapter_0",
-    [string]$CodexExtensionId = "hehggadaopoacecdllhajmbjkdcmajg"
+    [string]$CodexExtensionId = "hehggadaopoacecdllhhajmbjkdcmajg"
 )
 
 $ErrorActionPreference = "Stop"
