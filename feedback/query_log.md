@@ -31,3 +31,9 @@ Call log:
 - Error: `python was not found on PATH; PowerShell could not resolve python tools\fanqie_readonly_metrics.py`
 - CDP: reachable at `http://127.0.0.1:9222/json/version`
 - Action: continued with local repository files and empty feedback imports
+
+## 2026-05-09 Fanqie read-only query failed
+- Result: failed
+- Error: CDP remained unreachable after `tools\fanqie_start_cdp_chrome.ps1`; `python` was not found on PATH and `py` reported no installed Python
+- CDP: unreachable at `http://127.0.0.1:9222/json/version`
+- Action: continued with local repository files and empty feedback imports

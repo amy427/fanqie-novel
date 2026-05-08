@@ -1,13 +1,13 @@
 ﻿# Run State
 
-Last updated: 2026-05-08
+Last updated: 2026-05-09
 
 ## Current Formal State
 
-- Latest formal chapter detected in `chapters/`: 第032章
-- Latest formal summary detected in `chapter_summaries/`: 第032章
+- Latest formal chapter detected in `chapters/`: 第033章
+- Latest formal summary detected in `chapter_summaries/`: 第033章
 - Current publish-ready daily output beyond formal archive: none detected
-- Next routine chapter target: 第033章
+- Next routine chapter target: 第034章
 
 ## Current Automation State
 
@@ -34,17 +34,17 @@ Fanqie field split:
 
 ## Last Run Result
 
-- Date: 2026-05-08
+- Date: 2026-05-09
 - Automation ID: fanqie-daily-chapter-dry-run
-- Target chapter: 第032章
-- Title: 房号900
+- Target chapter: 第033章
+- Title: 携带人江彻
 - QA result: passed
-- Automatic rewrite: triggered once because initial draft was 3894 non-whitespace characters; final body is 4092.
+- Automatic rewrite: triggered once because initial draft was 5055 non-whitespace characters; final body is 4995.
 - Formal chapter written: yes
 - Formal summary written: yes
-- Feedback query: attempted, failed because `python` is not available on PATH; CDP itself was reachable.
-- Fanqie publish: submitted through safe publisher after a follow-up continuation step; Fanqie backend shows 第032章《房号900》审核中 at 2026-05-08 10:05.
-- Publish log: `daily_output/publish_logs/2026-05-08_100531_chapter_032_safe_publish.json`
+- Feedback query: attempted, failed because CDP was unreachable after the configured start script and Python is not installed.
+- Fanqie publish: attempted through the required safe publisher command, but the command could not start because `python` was not found; no retry loop was run.
+- Publish log: `daily_output/publish_logs/2026-05-09_064827_chapter_033_safe_publish_failed.json`
 - Git commit/push: failed before commit because this environment denied writes inside `.git` when `git add` attempted to create `D:/fanqie-novel/.git/index.lock`.
 
 ## Next Human Gate
@@ -64,5 +64,5 @@ Stop only if:
 ## Recommended Next Step
 
 ```text
-运行小说生产流程。目标：推进第033章。承接九楼登记表、携带人字段和高武资格来源追问。
+运行小说生产流程。目标：推进第034章。承接J-000担保字段、房号900第四声敲门和江彻右手回执物保管风险。
 ```

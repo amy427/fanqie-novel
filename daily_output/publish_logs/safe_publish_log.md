@@ -279,3 +279,26 @@ RuntimeError: Continue submit requested but no visible submit modal was found
 - Verified page: `True`
 - JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-08_100531_chapter_032_safe_publish.json`
 - Submitted: `True`
+
+## 2026-05-09_073520 safe publish failed before completion
+- Result: `failed`
+- Error: `RuntimeError: Body editor not found`
+- Traceback:
+```text
+Traceback (most recent call last):
+  File "D:\fanqie-novel\tools\fanqie_safe_publish.py", line 463, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "D:\fanqie-novel\tools\fanqie_safe_publish.py", line 378, in main
+    editor = find_body_editor(page)
+  File "D:\fanqie-novel\tools\fanqie_safe_publish.py", line 100, in find_body_editor
+    raise RuntimeError("Body editor not found")
+RuntimeError: Body editor not found
+```
+
+### 2026-05-09_073520 diagnosis
+
+- CDP was reachable and Python was available.
+- Precheck screenshot showed the Fanqie author site login form, not the chapter editor.
+- The safe publisher did not find the body editor because the Fanqie session was logged out.
+- Follow-up audit JSON: `daily_output/publish_logs/2026-05-09_073520_chapter_033_login_required.json`

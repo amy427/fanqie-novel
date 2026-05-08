@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-05-09 07:35:20 +08:00",
+  "chapter": 33,
+  "file": "daily_output\\第033章_番茄发布版.txt",
+  "expected_chapter": "033",
+  "command": "python tools\\fanqie_safe_publish.py --file daily_output\\第033章_番茄发布版.txt --expected-chapter 033 --open-publish-page --create-chapter --auto-submit",
+  "submitted": false,
+  "status": "failed",
+  "failure_stage": "login_required",
+  "cdp_status": "reachable",
+  "python_status": "available: Python 3.14.3",
+  "screenshot": "daily_output\\publish_logs\\2026-05-09_073444_chapter_033_precheck.png",
+  "error": "Safe publisher reached Fanqie author site, but the page was a login form, so the body editor was not present.",
+  "action": "No unsafe browser interaction was performed. User must complete Fanqie login in the CDP Chrome session, then rerun the safe publisher."
+}

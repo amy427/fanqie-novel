@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-05-09 06:48:27 +08:00",
+  "chapter": 33,
+  "file": "daily_output\\第033章_番茄发布版.txt",
+  "expected_chapter": "033",
+  "command": "python tools\\fanqie_safe_publish.py --file daily_output\\第033章_番茄发布版.txt --expected-chapter 033 --open-publish-page --create-chapter --auto-submit",
+  "submitted": false,
+  "status": "failed",
+  "failure_stage": "environment",
+  "cdp_status": "unreachable after tools\\fanqie_start_cdp_chrome.ps1",
+  "python_status": "python command not found; py launcher reports no installed Python",
+  "error": "PowerShell could not resolve python, so tools\\fanqie_safe_publish.py could not start.",
+  "action": "No retry loop. Local archive and repository update continued."
+}
