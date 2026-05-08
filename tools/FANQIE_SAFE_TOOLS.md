@@ -34,6 +34,8 @@ powershell -ExecutionPolicy Bypass -File tools\fanqie_browser_bridge_check.ps1 -
 
 It verifies local `python`, Chrome, CDP, Fanqie CDP tabs, and whether the Codex Chrome extension is installed in known Chrome profiles.
 
+`-OpenExtensionStore` opens the OpenAI Chrome Web Store publisher page, not only the direct extension detail URL. Some accounts or regions may see `This item is not available` on the direct detail URL even when the OpenAI publisher page remains reachable.
+
 The bridge is for login checks, page inspection, and failure diagnosis. It is not the unattended publish path.
 
 ## 3. Read-Only Metrics

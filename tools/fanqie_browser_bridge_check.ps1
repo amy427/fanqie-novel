@@ -3,7 +3,8 @@ param(
     [switch]$OpenExtensionStore,
     [int]$Port = 9222,
     [string]$FanqieUrl = "https://fanqienovel.com/main/writer/7628203489469942846/publish/?enter_from=newchapter_0",
-    [string]$CodexExtensionId = "hehggadaopoacecdllhhajmbjkdcmajg"
+    [string]$CodexExtensionId = "hehggadaopoacecdllhhajmbjkdcmajg",
+    [string]$OpenAiPublisherUrl = "https://chromewebstore.google.com/publisher/openai/u33f3849923dbb9495ad540f8634ab579"
 )
 
 $ErrorActionPreference = "Stop"
@@ -134,7 +135,7 @@ if ($OpenExtensionStore) {
     if (-not $chrome) {
         throw "Cannot open Chrome Web Store because Chrome was not found."
     }
-    $storeUrl = "https://chromewebstore.google.com/detail/codex/$CodexExtensionId"
-    Start-Process -FilePath $chrome -ArgumentList @("--new-window", $storeUrl)
-    Write-Check "Chrome Web Store" "OPENED" $storeUrl
+    Start-Process -FilePath $chrome -ArgumentList @("--new-window", $OpenAiPublisherUrl)
+    Write-Check "Chrome Web Store publisher page" "OPENED" $OpenAiPublisherUrl
+    Write-Check "Codex extension direct id" "INFO" $CodexExtensionId
 }

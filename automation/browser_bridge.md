@@ -45,13 +45,15 @@ This checks:
 4. Open Fanqie CDP tabs.
 5. Whether the Codex Chrome extension is installed in local Chrome profiles.
 
-To open the Chrome Web Store page for the Codex extension:
+To open the OpenAI Chrome Web Store publisher page and install Codex from there:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tools\fanqie_browser_bridge_check.ps1 -OpenExtensionStore
 ```
 
-Extension installation is interactive. Do not mark it complete unless Chrome shows the extension installed and Codex App exposes the `@chrome` target.
+The direct Codex extension detail URL can show `This item is not available` for some accounts, regions, or rollout states. Use the OpenAI publisher page first, then choose Codex / Add to Desktop if the listing is visible.
+
+Extension installation is interactive. Do not mark it complete unless Chrome shows the extension installed and Codex App exposes the `@chrome` target. If Web Store still reports the item unavailable from the OpenAI publisher page, keep using CDP + Playwright safe tools and retry the extension later from Codex App's own browser/computer-use entry point.
 
 ## Codex App Usage
 
