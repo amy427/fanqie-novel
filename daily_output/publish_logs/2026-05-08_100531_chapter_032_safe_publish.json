@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-05-08_100531",
+  "mode": "continue-submit",
+  "file": "daily_output\\第032章_番茄发布版.txt",
+  "expected_chapter": 32,
+  "title": "第032章 房号900",
+  "chapter_title_field": "房号900",
+  "body_non_whitespace_chars": 4092,
+  "sha256": "b807a4ccdda76fa4ee6e4dbd655ee3b181a6d54f00d0399b449ec15c2d558103",
+  "url": "https://fanqienovel.com/main/writer/7628203489469942846/publish/7637335219002933784?enter_from=newchapter_0",
+  "page_title": "作家专区-番茄小说网-番茄小说旗下原创文学平台",
+  "verified_page": true,
+  "auto_submit": false,
+  "opened_publish_page": false,
+  "new_page": false,
+  "page_url_contains": "7637335219002933784",
+  "create_chapter_requested": false,
+  "filled": false,
+  "submitted": true,
+  "submit_modals": [
+    "发布设置\n分卷\n第一卷：默认\n章节\n第32章 房号900\n上次提交\n第一卷第30章 观察席\n是否使用AI\n是\n否\n定时发布\n关闭定时发布后，章节在通过审核后会立即发布\n取消确认发布"
+  ],
+  "ai_used_selected": true,
+  "confirm_submit_clicks": [
+    "确认发布"
+  ],
+  "post_submit_modals_handled": 1,
+  "submitted_screenshot": "D:\\fanqie-novel\\daily_output\\publish_logs\\2026-05-08_100531_chapter_032_submitted.png"
+}

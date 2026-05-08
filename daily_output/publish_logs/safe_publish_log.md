@@ -233,3 +233,49 @@ Call log:
 - JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-08_003323_chapter_031_safe_publish.json`
 - Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-08_003323_chapter_031_precheck.png`
 - Submitted: `False`
+
+## 2026-05-08_095950 safe publish failed before completion
+- Result: `failed`
+- Error: `RuntimeError: Final publish confirmation button not found`
+- Traceback:
+```text
+Traceback (most recent call last):
+  File "D:\fanqie-novel\tools\fanqie_safe_publish.py", line 366, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "D:\fanqie-novel\tools\fanqie_safe_publish.py", line 333, in main
+    raise RuntimeError("Final publish confirmation button not found")
+RuntimeError: Final publish confirmation button not found
+```
+
+## 2026-05-08_100110 chapter 032 safe publish
+- Mode: `submit`
+- Title: `第032章 房号900`
+- Chapter title field: `房号900`
+- SHA256: `b807a4ccdda76fa4ee6e4dbd655ee3b181a6d54f00d0399b449ec15c2d558103`
+- Verified page: `True`
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-08_100110_chapter_032_safe_publish.json`
+- Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-08_100110_chapter_032_precheck.png`
+- Submitted: `True`
+
+## 2026-05-08_100458 safe publish failed before completion
+- Result: `failed`
+- Error: `RuntimeError: Continue submit requested but no visible submit modal was found`
+- Traceback:
+```text
+Traceback (most recent call last):
+  File "D:\fanqie-novel\tools\fanqie_safe_publish.py", line 451, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "D:\fanqie-novel\tools\fanqie_safe_publish.py", line 332, in main
+    raise RuntimeError("Continue submit requested but no visible submit modal was found")
+RuntimeError: Continue submit requested but no visible submit modal was found
+```
+
+## 2026-05-08_100531 chapter 032 continue submit
+- Mode: `continue-submit`
+- Title: `第032章 房号900`
+- SHA256: `b807a4ccdda76fa4ee6e4dbd655ee3b181a6d54f00d0399b449ec15c2d558103`
+- Verified page: `True`
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-08_100531_chapter_032_safe_publish.json`
+- Submitted: `True`

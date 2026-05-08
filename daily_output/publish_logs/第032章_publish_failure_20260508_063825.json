@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-05-08T06:38:25+08:00",
+  "chapter": 32,
+  "publish_file": "daily_output\\第032章_番茄发布版.txt",
+  "auto_publish_external": true,
+  "cdp_url": "http://127.0.0.1:9222",
+  "cdp_available": true,
+  "command": "python tools\\fanqie_safe_publish.py --file daily_output\\第032章_番茄发布版.txt --expected-chapter 32 --open-publish-page --create-chapter --auto-submit",
+  "attempted": true,
+  "submitted": false,
+  "result": "failed",
+  "failure_stage": "python_runtime",
+  "error": "python was not found on PATH; PowerShell could not resolve the python command",
+  "retry_policy": "not retried; automation must not loop on publish failures"
+}

@@ -25,3 +25,9 @@ Call log:
 - Reason: current page was not verified as Fanqie analytics/comments page
 - URL: `https://fanqienovel.com/main/writer/7628203489469942846/publish/7635508309587411480?enter_from=newchapter_0`
 - Title: `作家专区-番茄小说网-番茄小说旗下原创文学平台`
+
+## 2026-05-08 Fanqie read-only query failed
+- Result: failed
+- Error: `python was not found on PATH; PowerShell could not resolve python tools\fanqie_readonly_metrics.py`
+- CDP: reachable at `http://127.0.0.1:9222/json/version`
+- Action: continued with local repository files and empty feedback imports

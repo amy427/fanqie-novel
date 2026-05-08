@@ -112,13 +112,27 @@ def dismiss_known_overlays(page) -> None:
 
 
 def click_last_button_by_text(page, texts: list[str], timeout: int = 15000) -> str | None:
-    for text in texts:
-        loc = page.get_by_role("button", name=text)
-        if loc.count() == 0:
-            loc = page.get_by_text(text, exact=True)
-        if loc.count():
-            loc.last.click(timeout=timeout)
-            return text
+    deadline = timeout
+    step = 500
+    elapsed = 0
+    while elapsed <= deadline:
+        for text in texts:
+            locators = [page.get_by_role("button", name=text), page.get_by_text(text, exact=True)]
+            for loc in locators:
+                try:
+                    count = loc.count()
+                except Exception:
+                    continue
+                for idx in range(count - 1, -1, -1):
+                    candidate = loc.nth(idx)
+                    try:
+                        if candidate.is_visible(timeout=500) and candidate.is_enabled(timeout=500):
+                            candidate.click(timeout=timeout)
+                            return text
+                    except Exception:
+                        continue
+        page.wait_for_timeout(step)
+        elapsed += step
     return None
 
 
@@ -147,6 +161,49 @@ def select_ai_yes_if_present(modal) -> bool:
     except Exception:
         radio.check(force=True, timeout=10000)
     return True
+
+
+def get_visible_modal(page):
+    for selector in [".arco-modal-wrapper", ".arco-modal"]:
+        modals = page.locator(selector)
+        try:
+            count = modals.count()
+        except Exception:
+            continue
+        for idx in range(count - 1, -1, -1):
+            modal = modals.nth(idx)
+            try:
+                if modal.is_visible(timeout=500):
+                    return modal
+            except Exception:
+                continue
+    return None
+
+
+def handle_submit_modals(page, log_data: dict, max_rounds: int = 5) -> int:
+    handled = 0
+    for _ in range(max_rounds):
+        modal = get_visible_modal(page)
+        if modal is None:
+            break
+        try:
+            modal_text = modal.inner_text(timeout=10000)
+        except Exception:
+            modal_text = ""
+        log_data.setdefault("submit_modals", []).append(modal_text[:500])
+        if select_ai_yes_if_present(modal):
+            log_data["ai_used_selected"] = True
+        confirm_clicked = click_modal_primary(modal)
+        if confirm_clicked is None:
+            raise RuntimeError("Confirm publish button not found")
+        log_data.setdefault("confirm_submit_clicks", []).append(confirm_clicked)
+        handled += 1
+        try:
+            page.wait_for_load_state("networkidle", timeout=20000)
+        except PlaywrightTimeoutError:
+            pass
+        page.wait_for_timeout(3000)
+    return handled
 
 
 def safe_screenshot(page, path: Path, log_data: dict, key: str) -> None:
@@ -191,6 +248,7 @@ def main() -> int:
     parser.add_argument("--page-url-contains", default="", help="Reuse an existing CDP page whose URL contains this text.")
     parser.add_argument("--create-chapter", action="store_true", help="Click create chapter if present before filling.")
     parser.add_argument("--confirm-submit", default="", help="Must equal expected SHA256 to allow manual submit.")
+    parser.add_argument("--continue-submit", action="store_true", help="Continue an already-started Fanqie submit flow by handling visible confirmation modals.")
     parser.add_argument("--allow-unverified-page", action="store_true")
     args = parser.parse_args()
 
@@ -266,6 +324,50 @@ def main() -> int:
             "submitted": False,
         }
 
+        if args.continue_submit:
+            if not auto_publish_external_enabled():
+                raise SystemExit("Continue submit refused: auto_publish_external is not true in feedback/source_config.md")
+            handled = handle_submit_modals(page, log_data)
+            if handled == 0:
+                clicked = click_last_button_by_text(
+                    page,
+                    [TEXT_CONFIRM_PUBLISH, TEXT_CONFIRM_SUBMIT, TEXT_SUBMIT, TEXT_PUBLISH, TEXT_CONFIRM, TEXT_OK],
+                    timeout=30000,
+                )
+                if clicked is None:
+                    raise RuntimeError("Continue submit requested but no visible submit modal or confirmation button was found")
+                log_data["continue_submit_click"] = clicked
+                try:
+                    page.wait_for_load_state("networkidle", timeout=20000)
+                except PlaywrightTimeoutError:
+                    pass
+                page.wait_for_timeout(5000)
+            log_data["mode"] = "continue-submit"
+            log_data["post_submit_modals_handled"] = handled
+            log_data["submitted"] = True
+            submitted_screenshot = PUBLISH_LOG_DIR / f"{stamp}_chapter_{args.expected_chapter:03d}_submitted.png"
+            safe_screenshot(page, submitted_screenshot, log_data, "submitted_screenshot")
+            json_path = PUBLISH_LOG_DIR / f"{stamp}_chapter_{args.expected_chapter:03d}_safe_publish.json"
+            dump_json(json_path, log_data)
+            append_markdown_log(
+                RUN_LOG,
+                f"{stamp} chapter {args.expected_chapter:03d} continue submit",
+                [
+                    f"- Mode: `continue-submit`",
+                    f"- Title: `{title}`",
+                    f"- SHA256: `{expected_sha}`",
+                    f"- Verified page: `{verified}`",
+                    f"- JSON: `{json_path}`",
+                    f"- Submitted: `{log_data['submitted']}`",
+                ],
+            )
+            print("MODE: continue-submit")
+            print(f"TITLE: {title}")
+            print(f"SHA256: {expected_sha}")
+            print(f"JSON: {json_path}")
+            browser.close()
+            return 0
+
         screenshot_path = PUBLISH_LOG_DIR / f"{stamp}_chapter_{args.expected_chapter:03d}_precheck.png"
         safe_screenshot(page, screenshot_path, log_data, "screenshot")
 
@@ -312,12 +414,7 @@ def main() -> int:
             if modal.count():
                 modal_text = modal.inner_text(timeout=10000)
                 log_data["submit_modal_text_start"] = modal_text[:500]
-                if select_ai_yes_if_present(modal):
-                    log_data["ai_used_selected"] = True
-                confirm_clicked = click_modal_primary(modal)
-                if confirm_clicked is None:
-                    raise RuntimeError("Confirm publish button not found")
-                log_data["confirm_submit_click"] = confirm_clicked
+                log_data["post_submit_modals_handled"] = handle_submit_modals(page, log_data)
                 log_data["submitted"] = True
             else:
                 second_clicked = click_last_button_by_text(
