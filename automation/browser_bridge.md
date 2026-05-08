@@ -53,6 +53,8 @@ powershell -ExecutionPolicy Bypass -File tools\fanqie_browser_bridge_check.ps1 -
 
 The direct Codex extension detail URL can show `This item is not available` for some accounts, regions, or rollout states. Use the OpenAI publisher page first, then choose Codex / Add to Desktop if the listing is visible.
 
+Do not install `ChatGPT search` for this workflow. That extension changes Chrome's default search engine and is not the Codex browser-control bridge.
+
 Extension installation is interactive. Do not mark it complete unless Chrome shows the extension installed and Codex App exposes the `@chrome` target. If Web Store still reports the item unavailable from the OpenAI publisher page, keep using CDP + Playwright safe tools and retry the extension later from Codex App's own browser/computer-use entry point.
 
 ## Codex App Usage
