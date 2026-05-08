@@ -55,6 +55,8 @@ The direct Codex extension detail URL can show `This item is not available` for 
 
 Do not install `ChatGPT search` for this workflow. That extension changes Chrome's default search engine and is not the Codex browser-control bridge.
 
+Do not install third-party extensions such as `Codex Chrome Bridge` for this workflow unless the user explicitly approves a separate security review. A third-party bridge is outside OpenAI/Codex App support, may require a separate paid bridge package, and is not needed for this project's CDP + safe publisher path.
+
 Extension installation is interactive. Do not mark it complete unless Chrome shows the extension installed and Codex App exposes the `@chrome` target. If Web Store still reports the item unavailable from the OpenAI publisher page, keep using CDP + Playwright safe tools and retry the extension later from Codex App's own browser/computer-use entry point.
 
 ## Codex App Usage
