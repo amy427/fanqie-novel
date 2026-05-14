@@ -28,23 +28,26 @@ Read together with:
 2. Confirm required operational directories exist; create missing directories only.
 3. Check `daily_output/.run_lock`; if present, stop and write a run note.
 4. Scan `chapters/`, `chapter_summaries/`, and `daily_output/`.
-5. Determine latest formal chapter by `chapters/第XXX章_全文.md`.
-6. If a publish-ready pending chapter newer than latest formal exists, archive it first if safe.
-7. Otherwise target latest formal chapter + 1.
-8. Stop if target formal chapter or summary already exists.
-9. Read canon, recent chapters, summaries, feedback, and continuity.
-10. Generate target chapter into `daily_output/` first.
-11. Run quality gates.
-12. If needed, rewrite once and re-run quality gates.
-13. If pass, write formal chapter and formal summary.
-14. If fail, do not archive; keep draft, QA, and dry-run log.
-15. Generate required daily output artifacts.
-16. Update continuity, decision log, feedback notes, run index, and run state.
-17. Run feedback query if a verified analytics/comments CDP page is open.
-18. If `auto_publish_external: true`, run the safe publisher.
-19. Write dry-run log.
-20. Commit local changes.
-21. Push to GitHub after commit unless unavailable.
+5. When external publishing is enabled, verify the Fanqie author backend with `python tools\fanqie_verify_publish_state.py` and treat the latest externally published chapter as the publish target anchor.
+6. Determine latest formal chapter by `chapters/第XXX章_全文.md` only for local continuity and drafting support.
+7. If Fanqie latest is behind local formal archive, publish the next external chapter first; do not skip ahead just because later local chapters exist.
+8. If a publish-ready pending chapter newer than latest formal exists, archive it first if safe.
+9. Otherwise target latest formal chapter + 1 for local generation.
+10. Stop if target formal chapter or summary already exists and the task is local drafting; for external catch-up, use existing local publish artifacts.
+11. Read canon, recent chapters, summaries, feedback, and continuity.
+12. Generate target chapter into `daily_output/` first when local drafting is needed.
+13. Run quality gates.
+14. If needed, rewrite once and re-run quality gates.
+15. If pass, write formal chapter and formal summary.
+16. If fail, do not archive; keep draft, QA, and dry-run log.
+17. Generate required daily output artifacts.
+18. Update continuity, decision log, feedback notes, run index, and run state.
+19. Run feedback query if a verified analytics/comments CDP page is open.
+20. If `auto_publish_external: true`, run the safe publisher for the next external chapter.
+21. Re-check Fanqie chapter management; a successful publish must leave the chapter in `审核中` or `已发布`, not only in `草稿箱`.
+22. Write dry-run log.
+23. Commit local changes.
+24. Push to GitHub after commit unless unavailable.
 
 ## Automatic External Publish Step
 

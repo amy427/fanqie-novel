@@ -31,6 +31,16 @@ D:\fanqie-novel\daily_output\
 5. If a publish-ready chapter exists after the latest formal chapter, do not generate a later chapter until that pending chapter is resolved.
 6. Never overwrite existing formal chapter or formal summary files.
 
+## External Publish Target Detection
+
+When Fanqie publishing is enabled, local formal detection does not decide what to publish next.
+
+1. Verify the Fanqie author backend first.
+2. Use the latest externally published chapter as the publish anchor.
+3. If Fanqie shows latest published chapter `N`, publish local chapter `N+1` next if it exists and passed QA.
+4. Do not publish `N+2` while `N+1` is only local, draft, or missing from Fanqie.
+5. A successful external publish must be confirmed in chapter management as `审核中` or `已发布`; a draft-box entry alone is not success.
+
 ## Required Reading
 
 Always read:

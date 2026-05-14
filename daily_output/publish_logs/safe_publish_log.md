@@ -312,3 +312,13 @@ RuntimeError: Body editor not found
 - JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-14_215119_chapter_035_safe_publish.json`
 - Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-14_215119_chapter_035_precheck.png`
 - Submitted: `False`
+
+## 2026-05-14_215805 chapter 033 safe publish
+- Mode: `submit`
+- Title: `第033章 携带人江彻`
+- Chapter title field: `携带人江彻`
+- SHA256: `aa157528a9291e3eaba2e29318aed2acb141dbe4745e9b35ddae0453a651e646`
+- Verified page: `True`
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-14_215805_chapter_033_safe_publish.json`
+- Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-14_215805_chapter_033_precheck.png`
+- Submitted: `True`

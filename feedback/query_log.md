@@ -61,3 +61,10 @@ Call log:
 - Reason: current page was not verified as Fanqie analytics/comments page
 - URL: `https://fanqienovel.com/main/writer/7628203489469942846/publish/7637501471965069848?enter_from=newchapter_0`
 - Title: `作家专区-番茄小说网-番茄小说旗下原创文学平台`
+
+## 2026-05-14_221632 Fanqie publish state verified
+- Result: verified
+- Recent update: `第33章 携带人江彻`
+- Chapter management: `第33章 携带人江彻` status `已发布`
+- Next external target expectation: `第34章`
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-14_221632_fanqie_publish_state.json`

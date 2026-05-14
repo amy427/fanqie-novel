@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-05-14_221243",
+  "chapter": 33,
+  "title": "携带人江彻",
+  "source_file": "daily_output\\第033章_番茄发布版.txt",
+  "external_anchor_before_publish": {
+    "recent_update": "第32章 房号900",
+    "chapter_management_latest_published": "第32章 房号900"
+  },
+  "manual_continuation_steps": [
+    "Opened existing draft publish/7637501471965069848/?enter_from=modifydraft",
+    "Confirmed typo warning with 提交",
+    "Selected 仅基础检测",
+    "Selected 是否使用AI = 是",
+    "Clicked 确认发布"
+  ],
+  "result": "confirmed",
+  "fanqie_status_after_publish": {
+    "recent_update": "第33章 携带人江彻",
+    "chapter_management_status": "已发布",
+    "published_time": "2026-05-14 22:10"
+  },
+  "notes": "Initial safe publisher run created or left a draft because it did not handle the full Fanqie modal chain. The safe publisher was patched afterward."
+}

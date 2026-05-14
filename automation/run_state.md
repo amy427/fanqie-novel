@@ -6,8 +6,10 @@ Last updated: 2026-05-14
 
 - Latest formal chapter detected in `chapters/`: 第035章
 - Latest formal summary detected in `chapter_summaries/`: 第035章
+- Latest Fanqie published chapter verified in author backend: 第033章
 - Current publish-ready daily output beyond formal archive: none detected
-- Next routine chapter target: 第036章
+- Next external publish target: 第034章
+- Next local generation target after external catch-up: 第036章
 
 ## Current Automation State
 
@@ -47,8 +49,9 @@ Fanqie field split:
 - Feedback query: attempted, failed because `python` was not found on PATH; CDP was reachable at `http://127.0.0.1:9222/json/version`.
 - Fanqie publish: attempted through the required safe publisher command, but the command could not start because `python` was not found; no retry loop was run.
 - Publish log: `daily_output/publish_logs/2026-05-14_214005_chapter_035_safe_publish_failed.json`
-- Git commit/push: failed before commit because this environment denied writes inside `.git` when `git add` attempted to create `D:/fanqie-novel/.git/index.lock`; no stale lock file was present after the failure.
+- Git commit/push: previous run failed before commit because that environment denied writes inside `.git`; this was later remediated and pushed in commit `a539bd3`.
 - Remediation after failure: Python 3.14.3 and Playwright 1.58.0 were verified, Python paths were persisted to the user PATH, and `python tools\fanqie_safe_publish.py --file daily_output\第035章_番茄发布版.txt --expected-chapter 35 --open-publish-page` completed in dry-run mode.
+- External catch-up test: Fanqie author backend showed latest published chapter 第032章, so 第033章 was submitted from the existing local publish artifact. After handling typo confirmation, basic content check, AI-use selection, and final publish confirmation, chapter management showed `第33章 携带人江彻` as `已发布` at `2026-05-14 22:10`.
 
 ## Next Human Gate
 
@@ -67,5 +70,5 @@ Stop only if:
 ## Recommended Next Step
 
 ```text
-运行小说生产流程。目标：推进第036章。承接上一任J-317钥匙持有人、顾承霄G-019观察编号、封存箱隔离膜裂纹和观察席倒计时一分四十四秒。
+运行小说生产流程。先校验番茄发布页。若番茄最新仍为第033章，则优先发布本地已QA通过的第034章；外部追平后再推进第036章本地生成。
 ```

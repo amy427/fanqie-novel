@@ -39,6 +39,7 @@ TEXT_CONFIRM_PUBLISH = "\u786e\u8ba4\u53d1\u5e03"
 TEXT_CONFIRM_SUBMIT = "\u786e\u8ba4\u63d0\u4ea4"
 TEXT_SUBMIT = "\u63d0\u4ea4"
 TEXT_CONFIRM = "\u786e\u8ba4"
+TEXT_BASIC_CHECK = "\u4ec5\u57fa\u7840\u68c0\u6d4b"
 PLACEHOLDER_TITLE = "\u6807\u9898"
 PLACEHOLDER_BODY = "\u6b63\u6587"
 
@@ -191,6 +192,18 @@ def handle_submit_modals(page, log_data: dict, max_rounds: int = 5) -> int:
         except Exception:
             modal_text = ""
         log_data.setdefault("submit_modals", []).append(modal_text[:500])
+        if TEXT_BASIC_CHECK in modal_text:
+            clicked = click_last_button_by_text(page, [TEXT_BASIC_CHECK], timeout=10000)
+            if clicked is None:
+                raise RuntimeError("Basic content check button not found")
+            log_data.setdefault("content_check_clicks", []).append(clicked)
+            handled += 1
+            try:
+                page.wait_for_load_state("networkidle", timeout=20000)
+            except PlaywrightTimeoutError:
+                pass
+            page.wait_for_timeout(3000)
+            continue
         if select_ai_yes_if_present(modal):
             log_data["ai_used_selected"] = True
         confirm_clicked = click_modal_primary(modal)
@@ -410,27 +423,38 @@ def main() -> int:
             except PlaywrightTimeoutError:
                 pass
             page.wait_for_timeout(1500)
-            modal = page.locator(".arco-modal-wrapper").last
-            if modal.count():
-                modal_text = modal.inner_text(timeout=10000)
-                log_data["submit_modal_text_start"] = modal_text[:500]
-                log_data["post_submit_modals_handled"] = handle_submit_modals(page, log_data)
+            handled_after_first = handle_submit_modals(page, log_data)
+            if handled_after_first:
+                log_data["post_submit_modals_handled"] = handled_after_first
                 log_data["submitted"] = True
+                page.wait_for_timeout(5000)
+                submitted_screenshot = PUBLISH_LOG_DIR / f"{stamp}_chapter_{args.expected_chapter:03d}_submitted.png"
+                safe_screenshot(page, submitted_screenshot, log_data, "submitted_screenshot")
             else:
-                second_clicked = click_last_button_by_text(
-                    page,
-                    [TEXT_CONFIRM_PUBLISH, TEXT_CONFIRM_SUBMIT, TEXT_SUBMIT, TEXT_PUBLISH, TEXT_CONFIRM, TEXT_OK],
-                )
-                if second_clicked:
-                    log_data["second_submit_click"] = second_clicked
-                    log_data["submitted"] = True
-                elif clicked == TEXT_PUBLISH:
+                modal = page.locator(".arco-modal-wrapper").last
+                if modal.count():
+                    modal_text = modal.inner_text(timeout=10000)
+                    log_data["submit_modal_text_start"] = modal_text[:500]
+                    log_data["post_submit_modals_handled"] = handle_submit_modals(page, log_data)
                     log_data["submitted"] = True
                 else:
-                    raise RuntimeError("Final publish confirmation button not found")
-            page.wait_for_timeout(5000)
-            submitted_screenshot = PUBLISH_LOG_DIR / f"{stamp}_chapter_{args.expected_chapter:03d}_submitted.png"
-            safe_screenshot(page, submitted_screenshot, log_data, "submitted_screenshot")
+                    second_clicked = click_last_button_by_text(
+                        page,
+                        [TEXT_CONFIRM_PUBLISH, TEXT_CONFIRM_SUBMIT, TEXT_SUBMIT, TEXT_PUBLISH, TEXT_CONFIRM, TEXT_OK],
+                    )
+                    if second_clicked:
+                        log_data["second_submit_click"] = second_clicked
+                        extra_handled = handle_submit_modals(page, log_data)
+                        if extra_handled:
+                            log_data["extra_submit_modals_handled"] = extra_handled
+                        log_data["submitted"] = True
+                    elif clicked == TEXT_PUBLISH:
+                        log_data["submitted"] = True
+                    else:
+                        raise RuntimeError("Final publish confirmation button not found")
+                page.wait_for_timeout(5000)
+                submitted_screenshot = PUBLISH_LOG_DIR / f"{stamp}_chapter_{args.expected_chapter:03d}_submitted.png"
+                safe_screenshot(page, submitted_screenshot, log_data, "submitted_screenshot")
 
         json_path = PUBLISH_LOG_DIR / f"{stamp}_chapter_{args.expected_chapter:03d}_safe_publish.json"
         dump_json(json_path, log_data)
