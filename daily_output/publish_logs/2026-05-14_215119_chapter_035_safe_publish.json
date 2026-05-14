@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-05-14_215119",
+  "mode": "dry-run",
+  "file": "daily_output\\第035章_番茄发布版.txt",
+  "expected_chapter": 35,
+  "title": "第035章 空白观察席",
+  "chapter_title_field": "空白观察席",
+  "body_non_whitespace_chars": 4210,
+  "sha256": "28cafdf4cd5883377fea6478c3b75500d26c96bdc3702295fc5cee62fbfde7f7",
+  "url": "https://fanqienovel.com/main/writer/7628203489469942846/publish/7637501471965069848?enter_from=newchapter_0",
+  "page_title": "作家专区-番茄小说网-番茄小说旗下原创文学平台",
+  "verified_page": true,
+  "auto_submit": false,
+  "opened_publish_page": true,
+  "new_page": false,
+  "page_url_contains": "",
+  "create_chapter_requested": false,
+  "filled": false,
+  "submitted": false,
+  "screenshot": "D:\\fanqie-novel\\daily_output\\publish_logs\\2026-05-14_215119_chapter_035_precheck.png"
+}

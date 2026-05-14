@@ -302,3 +302,13 @@ RuntimeError: Body editor not found
 - Precheck screenshot showed the Fanqie author site login form, not the chapter editor.
 - The safe publisher did not find the body editor because the Fanqie session was logged out.
 - Follow-up audit JSON: `daily_output/publish_logs/2026-05-09_073520_chapter_033_login_required.json`
+
+## 2026-05-14_215119 chapter 035 safe publish
+- Mode: `dry-run`
+- Title: `第035章 空白观察席`
+- Chapter title field: `空白观察席`
+- SHA256: `28cafdf4cd5883377fea6478c3b75500d26c96bdc3702295fc5cee62fbfde7f7`
+- Verified page: `True`
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-14_215119_chapter_035_safe_publish.json`
+- Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-14_215119_chapter_035_precheck.png`
+- Submitted: `False`

@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-05-14T21:40:05+08:00",
+  "chapter": 35,
+  "title": "空白观察席",
+  "file": "daily_output\\第035章_番茄发布版.txt",
+  "command": "python tools\\fanqie_safe_publish.py --file daily_output\\第035章_番茄发布版.txt --expected-chapter 35 --open-publish-page --create-chapter --auto-submit",
+  "result": "failed",
+  "stage": "startup",
+  "cdp_status": "reachable at http://127.0.0.1:9222/json/version before publish attempt",
+  "error": "PowerShell could not resolve python on PATH; py launcher reported no installed Python runtime.",
+  "submitted": false,
+  "retry_loop": false,
+  "notes": "Safe publisher could not start, so no Fanqie page fill or submit was attempted."
+}

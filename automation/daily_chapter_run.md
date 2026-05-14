@@ -51,6 +51,7 @@ Read together with:
 Before publishing, ensure CDP is available:
 
 ```powershell
+powershell -ExecutionPolicy Bypass -File tools\fanqie_python_preflight.ps1 -PersistUserPath
 powershell -ExecutionPolicy Bypass -File tools\fanqie_start_cdp_chrome.ps1
 ```
 

@@ -41,10 +41,11 @@ Reason:
 
 Before feedback query or publishing:
 
-1. Check `http://127.0.0.1:9222/json/version`.
-2. If unavailable, run `tools/fanqie_start_cdp_chrome.ps1`.
-3. If still unavailable, log failure and stop external work.
-4. Do not assume the last browser tab is correct; safe tools must verify page identity.
+1. Run `tools/fanqie_python_preflight.ps1 -PersistUserPath` to verify `python` and Playwright are available.
+2. Check `http://127.0.0.1:9222/json/version`.
+3. If unavailable, run `tools/fanqie_start_cdp_chrome.ps1`.
+4. If still unavailable, log failure and stop external work.
+5. Do not assume the last browser tab is correct; safe tools must verify page identity.
 
 ## Browser Bridge Guard
 

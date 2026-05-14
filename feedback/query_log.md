@@ -37,3 +37,27 @@ Call log:
 - Error: CDP remained unreachable after `tools\fanqie_start_cdp_chrome.ps1`; `python` was not found on PATH and `py` reported no installed Python
 - CDP: unreachable at `http://127.0.0.1:9222/json/version`
 - Action: continued with local repository files and empty feedback imports
+
+## 2026-05-10 Fanqie read-only query failed
+- Result: failed
+- Error: CDP remained unreachable after `tools\fanqie_start_cdp_chrome.ps1`; `python` was not found on PATH and `py` reported no installed Python
+- CDP: unreachable at `http://127.0.0.1:9222/json/version`
+- Feedback imports: no usable imports detected beyond `.gitkeep`
+- Action: continued with local repository files and empty feedback imports
+
+## 2026-05-14 Fanqie read-only query failed
+- Result: failed
+- Error: `python` was not found on PATH; `py` launcher reported no installed Python runtime
+- CDP: reachable at `http://127.0.0.1:9222/json/version`
+- Feedback imports: no usable imports detected beyond `.gitkeep`
+- Action: continued with local repository files and empty feedback imports
+
+## 2026-05-14_215119 Fanqie read-only query failed
+- Result: failed
+- Error: `Error: Page.title: Execution context was destroyed, most likely because of a navigation`
+
+## 2026-05-14_215153 Fanqie read-only query skipped
+- Result: skipped
+- Reason: current page was not verified as Fanqie analytics/comments page
+- URL: `https://fanqienovel.com/main/writer/7628203489469942846/publish/7637501471965069848?enter_from=newchapter_0`
+- Title: `作家专区-番茄小说网-番茄小说旗下原创文学平台`

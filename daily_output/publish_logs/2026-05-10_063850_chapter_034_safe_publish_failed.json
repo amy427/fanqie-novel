@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-10 06:38:50 +08:00",
+  "chapter": 34,
+  "file": "daily_output\\第034章_番茄发布版.txt",
+  "command": "python tools\\fanqie_safe_publish.py --file daily_output\\第034章_番茄发布版.txt --expected-chapter 034 --open-publish-page --create-chapter --auto-submit",
+  "result": "failed",
+  "submitted": false,
+  "cdp_endpoint": "http://127.0.0.1:9222",
+  "cdp_status": "unreachable after tools\\fanqie_start_cdp_chrome.ps1",
+  "python_status": "python not found on PATH; py launcher reports no installed Python",
+  "error": "Safe publisher could not start because the Python runtime is unavailable.",
+  "retry_loop": false
+}
