@@ -1,6 +1,6 @@
 # Quality Gates
 
-Current version date: 2026-05-08
+Current version date: 2026-05-16
 
 ## Automatic Rewrite Triggers
 
@@ -90,8 +90,9 @@ Final chapter may be archived only when all are true:
 5. 是否承接上一章
 6. 是否有章末钩子
 7. 正文和番茄发布版是否无空白行
-8. 是否建议发布
+8. 是否建议生成发布前人工改稿包
 9. 正式正文路径
 10. 正式摘要路径
-11. Fanqie 自动发布状态
-12. Fanqie 发布日志路径
+11. Fanqie 发布状态：常规流程应为 `未尝试，停在人工改稿闸门`
+12. Fanqie 发布日志路径：常规流程应为 `无`
+13. 人工改稿清单路径

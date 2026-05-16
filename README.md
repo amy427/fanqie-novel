@@ -1,14 +1,17 @@
 # Fanqie Novel Workspace
 
-This repository contains the long-form web novel production system for `高武：违规者才配活着`.
+This repository contains a Fanqie web novel production system. The previous serial `高武：违规者才配活着` is stopped/archive status; new-book incubation now lives under `new_book/`.
 
 ## Project Snapshot
 
 - Project type: Fanqie web novel production workspace.
-- Core goal: produce, QA, archive, publish, and improve a long-running rule-horror urban high-martial-arts serial.
-- Protagonist: 江彻.
-- Current formal archive as of 2026-05-08: 第031章.
-- Next routine target: 第032章.
+- Core goal: produce, QA, archive, package for manual revision, and improve Fanqie-ready serial fiction.
+- Old-book latest formal archive as of 2026-05-16: 第036章.
+- Old-book latest verified Fanqie chapter: 第035章《空白观察席》.
+- Old-book routine continuation: stopped unless explicitly requested.
+- New-book status: incubation under `new_book/`.
+- Next routine target: new-book setup and manual-revision workflow.
+- External publishing: disabled; automation stops before Fanqie submission.
 - GitHub remote: `https://github.com/amy427/fanqie-novel.git`.
 
 ## Directory Map
@@ -20,6 +23,7 @@ This repository contains the long-form web novel production system for `高武�
 - `automation/`: repeatable production rules, quality gates, safety rules, and current run state.
 - `continuity/`: active story state for open threads, objects, characters, and rules.
 - `feedback/`: reader metrics, query configuration, comments, and performance notes.
+- `new_book/`: new-book setup, anti-AI-filler rules, opening hooks, and manual edit templates.
 - `tools/`: Fanqie CDP helpers and safe publish tooling.
 - `decision_log/`: dated project decisions.
 - `weekly_review/`: periodic review notes.
@@ -38,25 +42,28 @@ Read these before running the project:
 
 ## Daily Chapter Flow
 
-1. Detect latest formal chapter in `chapters/`.
-2. Target only latest formal chapter + 1.
+1. Detect active project state from `PROJECT_OS.md` and `automation/run_state.md`.
+2. If the old book remains stopped, do not target old-book 第037章.
 3. Read canon, recent chapters, summaries, continuity, and feedback.
 4. Generate daily artifacts first under `daily_output/`.
 5. Run QA and rewrite once if quality gates fail.
 6. Archive to `chapters/` and `chapter_summaries/` only when QA passes.
 7. Update continuity, run state, feedback notes, and decision logs.
-8. If `auto_publish_external: true`, publish through the safe publisher.
-9. Commit and push when the run changes files.
+8. Generate the Fanqie publish version and manual revision checklist.
+9. Stop before browser publish, editor fill, or submit.
+10. Commit and push when the run changes files.
 
-## Fanqie CDP Publishing
+## Fanqie CDP Publishing Boundary
 
-Start or verify CDP Chrome:
+Routine automation must not publish externally while `feedback/source_config.md` contains `auto_publish_external: false`.
+
+Start or verify CDP Chrome only for feedback query, browser diagnosis, or an explicitly requested manual publish:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tools\fanqie_start_cdp_chrome.ps1
 ```
 
-Safe publisher:
+Safe publisher, only after the user edits the publish file and explicitly requests publication:
 
 ```powershell
 python tools\fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --open-publish-page --create-chapter --auto-submit

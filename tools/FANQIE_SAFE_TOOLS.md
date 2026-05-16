@@ -1,6 +1,6 @@
 # Fanqie Safe Tools
 
-Current version date: 2026-05-08
+Current version date: 2026-05-16
 
 ## 1. CDP Startup
 
@@ -57,6 +57,14 @@ If the page is not verified, it exits without saving page content unless `--allo
 
 ## 4. Safe Publish
 
+Routine automation must not publish externally while `feedback/source_config.md` contains:
+
+```text
+auto_publish_external: false
+```
+
+The current workflow stops at the manual revision gate so the user can edit the publish file before any platform submission.
+
 Dry-run validation:
 
 ```powershell
@@ -75,19 +83,19 @@ Manual submit requires explicit SHA confirmation:
 python tools\fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --fill --submit --confirm-submit <SHA256>
 ```
 
-Unattended automatic publish:
+Manual publish after user edits and explicitly requests submission:
 
 ```powershell
 python tools\fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --open-publish-page --create-chapter --auto-submit
 ```
 
-Automatic publishing works only when `feedback/source_config.md` contains:
+Publishing works only when `feedback/source_config.md` contains:
 
 ```text
 auto_publish_external: true
 ```
 
-Continue an already-started confirmation flow:
+Continue an already-started explicit manual confirmation flow:
 
 ```powershell
 python tools\fanqie_safe_publish.py --file daily_output\绗琗XX绔燺鐣寗鍙戝竷鐗?txt --expected-chapter XXX --page-url-contains <publish-page-id> --continue-submit

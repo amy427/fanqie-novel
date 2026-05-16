@@ -1,6 +1,6 @@
 # OPERATING_LOOP
 
-Current version date: 2026-05-08
+Current version date: 2026-05-16
 
 ## 1. Closed Loop
 
@@ -16,7 +16,8 @@ state check
 -> formal archive
 -> continuity update
 -> feedback query
--> Fanqie publish if authorized
+-> manual revision gate
+-> Fanqie publish only if explicitly requested later
 -> Git commit and push
 -> next hook and run state
 ```
@@ -32,7 +33,7 @@ Required checks:
 5. Pending publish-ready daily output.
 6. Latest QA report.
 7. Latest next-chapter hook.
-8. CDP state if feedback query or publishing is requested.
+8. CDP state if feedback query or explicit manual publishing is requested.
 
 Output:
 
@@ -41,7 +42,11 @@ Output:
 
 ## 3. Target Decision
 
-Default target is latest formal chapter + 1.
+Default target is the active project's next required unit.
+
+Current active mode is new-book incubation. Because the old book is stopped/archive status, routine automation must not infer 第037章 from the old formal archive. It should prepare or advance `new_book/` until the user explicitly reactivates the old book or approves a new-book chapter target.
+
+For an active serial, default chapter target is latest formal chapter + 1.
 
 Stop if:
 
@@ -64,7 +69,7 @@ Read in priority order:
 
 ## 5. Generation
 
-Generate only the target chapter.
+Generate only the target chapter or new-book setup artifact selected in the target decision.
 
 Rules:
 
@@ -103,23 +108,36 @@ If unavailable:
 1. Log the skip reason in `feedback/query_log.md`.
 2. Continue local production.
 
-## 8. Publish
+## 8. Manual Revision Gate
 
-Publish only through `tools/fanqie_safe_publish.py`.
+Routine automation must not publish externally.
+
+After QA passes, create the publish package and stop:
+
+1. `daily_output/第XXX章_番茄发布版.txt`
+2. `daily_output/第XXX章_发布检查清单.md`
+3. `daily_output/第XXX章_人工改稿清单.md`
+
+The chapter is considered ready for human revision, not ready for unattended submission.
+
+## 9. Manual Publish
+
+Publish only through `tools/fanqie_safe_publish.py`, and only when the user explicitly asks to publish an edited file.
 
 Before publishing:
 
 1. Ensure `feedback/source_config.md` contains `auto_publish_external: true`.
-2. Ensure CDP is reachable at `http://127.0.0.1:9222`.
-3. If not reachable, run `tools/fanqie_start_cdp_chrome.ps1`.
-4. Ensure the target publish file exists.
+2. Ensure the user explicitly requested publishing the edited target file in the current turn.
+3. Ensure CDP is reachable at `http://127.0.0.1:9222`.
+4. If not reachable, run `tools/fanqie_start_cdp_chrome.ps1`.
+5. Ensure the target publish file exists.
 
 Fanqie field split:
 
 1. Chapter number field between `第` and `章`: Arabic digits only.
 2. Title field after `章`: chapter title only.
 
-## 9. Versioning
+## 10. Versioning
 
 After successful operational changes:
 
@@ -132,7 +150,7 @@ git push
 
 Never use `git reset --hard`.
 
-## 10. Final Reply
+## 11. Final Reply
 
 Do not paste chapter prose.
 

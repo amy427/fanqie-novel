@@ -1,10 +1,10 @@
 # AUTO_MODE
 
-Current version date: 2026-05-06
+Current version date: 2026-05-16
 
 ## Status
 
-Human confirmation gates are disabled for local repository operations.
+Human confirmation gates are disabled for local repository operations only.
 
 Codex may automatically decide:
 
@@ -19,7 +19,13 @@ Codex may automatically decide:
 
 External Fanqie publishing is not enabled in unattended mode.
 
-To enable it later, create a dedicated safe publisher configuration and explicitly set:
+Current repository config is:
+
+```text
+auto_publish_external: false
+```
+
+To enable a later manual publish, the user must edit the publish file and explicitly request publication for that target. The config must also be changed to:
 
 ```text
 auto_publish_external: true

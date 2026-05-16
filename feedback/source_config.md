@@ -1,6 +1,6 @@
 # Feedback Source Config
 
-Current version date: 2026-05-06
+Current version date: 2026-05-16
 
 ## Enabled Sources
 
@@ -14,19 +14,24 @@ Current version date: 2026-05-06
 ## External Publishing
 
 ```text
-auto_publish_external: true
+auto_publish_external: false
 ```
 
-This config enables automatic query and unattended Fanqie publishing through `tools/fanqie_safe_publish.py`.
+This config disables unattended Fanqie publishing.
 
-Automatic publishing remains guarded by:
+Reason:
 
-1. Chapter number validation.
-2. No-blank-line publish file validation.
-3. Fanqie page verification.
-4. Fill-and-read-back body verification.
-5. Publish log and screenshots.
-6. Local JSON audit record.
+The previous book lost traffic after insufficient human revision and was likely treated as AI filler. Future automation must stop before external publish so the user can manually revise voice, rhythm, scene texture, and anti-AI traces.
+
+Manual publishing remains allowed only after the user explicitly requests it for a specific edited publish file.
+
+If manual publishing is later requested, use only:
+
+```powershell
+python tools\fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --open-publish-page --create-chapter --auto-submit
+```
+
+Automation must not run that command during routine chapter production while `auto_publish_external: false`.
 
 ## Read-Only Query Tool
 

@@ -1,33 +1,34 @@
 # Browser Bridge
 
-Current version date: 2026-05-08
+Current version date: 2026-05-16
 
 ## Purpose
 
-Use browser control to make Fanqie login checks, page inspection, and publish-failure diagnosis faster without weakening the unattended publish guard.
+Use browser control to make Fanqie login checks, page inspection, and publish-failure diagnosis faster without weakening the manual publishing guard.
 
 This project has two browser paths:
 
-1. CDP + Playwright safe tools: primary path for routine automation and unattended publishing.
+1. CDP + Playwright safe tools: primary path for read-only feedback, verification, and explicitly requested safe publishing.
 2. Codex Chrome extension / `@chrome`: operator-assist path for inspecting the live logged-in browser, switching tabs, confirming page state, and diagnosing changed UI.
 
 ## Priority Order
 
-1. For unattended external publish, always use:
+1. Routine automation does not publish externally while `feedback/source_config.md` contains `auto_publish_external: false`.
+2. For an explicitly requested manual publish of an edited file, use:
 
 ```powershell
 python tools\fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --open-publish-page --create-chapter --auto-submit
 ```
 
-2. If the safe publisher fails, inspect `daily_output/publish_logs/` first.
-3. If a Fanqie confirmation dialog is already open, continue through the safe publisher:
+3. If the safe publisher fails, inspect `daily_output/publish_logs/` first.
+4. If a Fanqie confirmation dialog is already open, continue through the safe publisher:
 
 ```powershell
 python tools\fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --page-url-contains <publish-page-id> --continue-submit
 ```
 
-4. Use `@chrome` only to inspect browser state, validate login/session, identify changed button text, or check whether Fanqie shows the chapter as draft, reviewing, or published.
-5. If `@chrome` discovers a repeatable UI change, patch `tools\fanqie_safe_publish.py` instead of relying on manual visual clicking.
+5. Use `@chrome` only to inspect browser state, validate login/session, identify changed button text, or check whether Fanqie shows the chapter as draft, reviewing, or published.
+6. If `@chrome` discovers a repeatable UI change, patch `tools\fanqie_safe_publish.py` instead of relying on manual visual clicking.
 
 ## Local Bridge Check
 
@@ -77,10 +78,10 @@ For publish troubleshooting:
 
 The extension path is not a replacement for `tools\fanqie_safe_publish.py`.
 
-Unattended publishing must remain auditable through JSON logs and screenshots under:
+Any explicit manual publish must remain auditable through JSON logs and screenshots under:
 
 ```text
 daily_output/publish_logs/
 ```
 
-Direct browser clicking through `@chrome` is allowed for read-only inspection and explicit human-directed troubleshooting only. Routine automation must keep using the safe publisher.
+Direct browser clicking through `@chrome` is allowed for read-only inspection and explicit human-directed troubleshooting only. Routine automation must stop at the manual revision gate.

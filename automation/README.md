@@ -9,7 +9,7 @@ This folder turns the long daily-generation prompt into a maintainable local ope
 3. Daily automation must pass safety checks before writing any formal chapter or summary.
 4. Failed runs stay in `daily_output/` and must not touch `chapters/` or `chapter_summaries/`.
 5. Existing old chapters, summaries, canon files, QA reports, publish versions, and drafts are never overwritten.
-6. External publishing is allowed only through `tools/fanqie_safe_publish.py`.
+6. Routine external publishing is disabled; manual publishing is allowed only through `tools/fanqie_safe_publish.py` after explicit user request.
 
 ## Files
 
@@ -21,13 +21,14 @@ This folder turns the long daily-generation prompt into a maintainable local ope
 - `run_index.md`: historical run index.
 - `feedback_query.md`: feedback query rules.
 - `auto_decision_policy.md`: unattended decision policy.
+- `manual_revision_gate.md`: stop-before-publish workflow for user edits.
 
 ## Current Entry
 
-Routine continuation:
+Routine continuation now targets new-book setup and manual revision workflow:
 
 ```text
-运行小说生产流程。目标：推进第032章。按 PROJECT_OS 和 OPERATING_LOOP 执行。
+运行小说生产流程。按 PROJECT_OS 和 OPERATING_LOOP 执行；旧书不继续外发，生成内容停在人工改稿闸门。
 ```
 
 CDP startup:

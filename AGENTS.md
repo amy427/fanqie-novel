@@ -4,7 +4,7 @@ Guidance for AI agents working in `D:\fanqie-novel`.
 
 ## Project Identity
 
-This is a Fanqie web novel production workspace for `高武：违规者才配活着`, a rule-horror, high-martial-arts, urban male-frequency serial.
+This is a Fanqie web novel production workspace. The previous serial `高武：违规者才配活着` is now stopped/archive status, and new-book incubation lives under `new_book/`.
 
 The project is writing-first. Canon Markdown, formal chapters, summaries, continuity files, QA artifacts, and publish logs are more important than generic code structure.
 
@@ -51,14 +51,17 @@ Operational truth:
 - Reader feedback and metrics: `feedback/`
 - Fanqie browser automation helpers: `tools/`
 
-## Current State As Of 2026-05-08
+## Current State As Of 2026-05-16
 
-- Latest formal chapter detected in `chapters/`: 第031章
-- Latest formal summary detected in `chapter_summaries/`: 第031章
-- Next routine chapter target: 第032章
-- Story phase: volume 2, still resolving the late `旧河公寓` / `十三号线` pressure chain.
-- External publish automation is enabled by `feedback/source_config.md` with `auto_publish_external: true`.
-- Fanqie CDP must be available at `http://127.0.0.1:9222` before publish or feedback scripts run.
+- Old-book latest formal chapter detected in `chapters/`: 第036章
+- Old-book latest formal summary detected in `chapter_summaries/`: 第036章
+- Old-book latest verified Fanqie chapter: 第035章《空白观察席》
+- Old-book status: stopped/archive; do not continue routine generation or external publishing unless explicitly requested.
+- New-book status: incubation under `new_book/`.
+- Next routine target: new-book setup and manual-revision workflow, not old-book 第037章.
+- External publish automation is disabled by `feedback/source_config.md` with `auto_publish_external: false`.
+- Future automation must stop at the manual revision gate before publishing, because the user wants to revise prose to avoid AI-filler classification.
+- Fanqie CDP must be available at `http://127.0.0.1:9222` before feedback scripts or an explicitly requested manual publish run.
 
 ## Working Rules
 
@@ -79,13 +82,15 @@ Operational truth:
 
 ## Fanqie Automation Caution
 
-Use only the safe publisher for unattended publishing:
+Routine automation must not publish unattended.
+
+Use the safe publisher only after the user explicitly asks to publish an edited file:
 
 ```powershell
 python tools\fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --open-publish-page --create-chapter --auto-submit
 ```
 
-If CDP is unavailable, start Chrome with:
+If CDP is unavailable for a manual publish or browser diagnosis, start Chrome with:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tools\fanqie_start_cdp_chrome.ps1

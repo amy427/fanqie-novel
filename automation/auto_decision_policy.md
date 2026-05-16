@@ -1,6 +1,6 @@
 # Auto Decision Policy
 
-Current version date: 2026-05-06
+Current version date: 2026-05-16
 
 ## Purpose
 
@@ -22,6 +22,8 @@ Codex may automatically:
 8. Update decision logs.
 9. Update feedback and metrics files from configured read-only sources.
 10. Commit and push repository changes when the run completes.
+
+Codex may not automatically publish externally in routine runs. It must stop at the manual revision gate.
 
 ## Automatic Title Selection
 
@@ -59,17 +61,21 @@ If `N+1` already has a passed QA in `daily_output`, automation must archive it f
 
 Codex may query configured external sources in read-only mode.
 
-Codex must not publish to Fanqie or any external platform unless a dedicated safe publisher is configured and the automation prompt explicitly says `auto_publish_external: true`.
+Codex must not publish to Fanqie or any external platform unless all are true:
+
+1. A dedicated safe publisher is configured.
+2. `feedback/source_config.md` contains `auto_publish_external: true`.
+3. The user explicitly requests publishing for the edited target file in the current turn.
 
 Current status:
 
 ```text
-auto_publish_external: true
+auto_publish_external: false
 ```
 
 Reason:
 
-The dedicated safe publisher now supports unattended auto-submit when the config is enabled.
+The previous book lost traffic after insufficient human revision and was likely treated as AI filler. Routine automation must generate local artifacts only and stop before external publishing so the user can revise.
 
 ## Safe Publisher Tool
 
@@ -93,10 +99,24 @@ To submit manually, the caller may still provide the exact printed SHA256:
 python tools/fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --fill --submit --confirm-submit <SHA256>
 ```
 
-Unattended automation may publish without manual SHA entry by using:
+Unattended automation must not publish while `auto_publish_external: false`.
+
+If the user later explicitly enables publishing and requests a specific chapter submission, the guarded command is:
 
 ```powershell
 python tools/fanqie_safe_publish.py --file daily_output\第XXX章_番茄发布版.txt --expected-chapter XXX --open-publish-page --create-chapter --auto-submit
 ```
 
-This requires `auto_publish_external: true` in `feedback/source_config.md`.
+This still requires `auto_publish_external: true` in `feedback/source_config.md` at execution time.
+
+## Manual Revision Gate
+
+After QA passes, automation must:
+
+1. Generate `daily_output\第XXX章_番茄发布版.txt`.
+2. Generate `daily_output\第XXX章_发布检查清单.md`.
+3. Generate `daily_output\第XXX章_人工改稿清单.md`.
+4. Mark the chapter as `待人工改稿`.
+5. Stop before browser publish, fill, submit, or external upload.
+
+The user edits the publish version manually. Automation may later QA or package the edited file if asked.

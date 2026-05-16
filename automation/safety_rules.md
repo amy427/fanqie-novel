@@ -1,6 +1,6 @@
 # Safety Rules
 
-Current version date: 2026-05-08
+Current version date: 2026-05-16
 
 ## Hard Prohibitions
 
@@ -13,7 +13,8 @@ Current version date: 2026-05-08
 7. Do not overwrite existing `chapters/第XXX章_全文.md`.
 8. Do not overwrite existing `chapter_summaries/第XXX章_摘要.md`.
 9. Do not use legacy unsafe publish scripts in unattended automation.
-10. Do not publish externally unless `auto_publish_external: true` is configured and `tools/fanqie_safe_publish.py --auto-submit` is used.
+10. Do not publish externally unless `auto_publish_external: true` is configured, the user explicitly asks to publish the edited target file in the current turn, and `tools/fanqie_safe_publish.py --auto-submit` is used.
+11. Do not run unattended external publishing during routine chapter generation while `auto_publish_external: false`.
 
 ## Allowed Creates
 
@@ -24,6 +25,7 @@ Daily automation may create:
 3. New target daily output artifacts.
 4. New run logs.
 5. New publish logs and screenshots under `daily_output/publish_logs/`.
+6. New manual revision checklists for the current target chapter.
 
 Daily automation may not edit older chapter artifacts except the current target artifacts it created in the current run.
 
@@ -61,6 +63,10 @@ Use it only for:
 Do not use `@chrome` as the unattended external publishing mechanism. If the browser bridge reveals a repeatable UI change, patch `tools/fanqie_safe_publish.py` and keep JSON logs and screenshots under `daily_output/publish_logs/`.
 
 ## Fanqie Publish Guard
+
+Routine automation currently stops before this guard because `feedback/source_config.md` sets `auto_publish_external: false`.
+
+The publish guard applies only when the user explicitly requests publishing an edited file and config is re-enabled.
 
 Use only:
 
