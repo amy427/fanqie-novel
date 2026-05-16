@@ -322,3 +322,13 @@ RuntimeError: Body editor not found
 - JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-14_215805_chapter_033_safe_publish.json`
 - Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-14_215805_chapter_033_precheck.png`
 - Submitted: `True`
+
+## 2026-05-16_095538 chapter 034 safe publish
+- Mode: `submit`
+- Title: `第034章 第四声敲门`
+- Chapter title field: `第四声敲门`
+- SHA256: `29cc465c2dd00884aa7e528d7b935ddd09a82bd46743ebf839350b344f4d02ce`
+- Verified page: `True`
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-16_095538_chapter_034_safe_publish.json`
+- Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-16_095538_chapter_034_precheck.png`
+- Submitted: `True`

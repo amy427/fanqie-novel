@@ -68,3 +68,44 @@ Call log:
 - Chapter management: `第33章 携带人江彻` status `已发布`
 - Next external target expectation: `第34章`
 - JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-14_221632_fanqie_publish_state.json`
+
+## 2026-05-15 Fanqie read-only query failed
+- Result: failed
+- Error: `python` was not recognized in the current automation shell, so `python tools\fanqie_readonly_metrics.py` could not start.
+- CDP: reachable at `http://127.0.0.1:9222/json/version`
+- Feedback imports: no usable imports detected beyond `.gitkeep`
+- Action: continued with local repository files and empty feedback imports
+
+## 2026-05-15 Fanqie publish state verification failed
+- Result: failed
+- Error: `python` was not recognized in the current automation shell, so `python tools\fanqie_verify_publish_state.py` could not start.
+- CDP: reachable at `http://127.0.0.1:9222/json/version`
+- Action: retained last verified external anchor 第033章 from 2026-05-14; next external target remains 第034章
+
+## 2026-05-15 Fanqie safe publish failed
+- Result: failed before script start
+- Target: 第034章
+- Error: `python` was not recognized in the current automation shell, so the required safe publisher command could not start.
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-15_221605_chapter_034_safe_publish_failed.json`
+- Action: no retry loop; continued local 第036章 archive and commit flow
+
+## 2026-05-16_095532 Fanqie read-only query
+- Result: saved
+- Verified: `True`
+- URL: `https://fanqienovel.com/main/writer/chapter-manage/7628203489469942846&%E9%AB%98%E6%AD%A6%EF%BC%9A%E8%BF%9D%E8%A7%84%E8%80%85%E6%89%8D%E9%85%8D%E6%B4%BB%E7%9D%80?type=2`
+- Title: `作家专区-番茄小说网-番茄小说旗下原创文学平台`
+- JSON: `D:\fanqie-novel\feedback\imports\2026-05-16_095532_fanqie_readonly_metrics.json`
+- Text: `D:\fanqie-novel\feedback\imports\2026-05-16_095532_fanqie_readonly_page.txt`
+
+## 2026-05-16 Fanqie publish state verified
+- Result: verified
+- Before publish: latest external chapter 第033章《携带人江彻》; next expectation 第034章 passed.
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-16_095413_fanqie_publish_state.json`
+
+## 2026-05-16 Fanqie safe publish succeeded
+- Result: submitted and verified
+- Target: 第034章《第四声敲门》
+- Safe publisher JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-16_095538_chapter_034_safe_publish.json`
+- Verification JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-16_095805_fanqie_publish_state.json`
+- Chapter management: 第034章《第四声敲门》 status `已发布`, time `2026-05-16 09:56`
+- Next external target expectation: 第035章

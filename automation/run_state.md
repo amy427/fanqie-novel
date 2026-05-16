@@ -1,15 +1,16 @@
 ﻿# Run State
 
-Last updated: 2026-05-14
+Last updated: 2026-05-16
 
 ## Current Formal State
 
-- Latest formal chapter detected in `chapters/`: 第035章
-- Latest formal summary detected in `chapter_summaries/`: 第035章
-- Latest Fanqie published chapter verified in author backend: 第033章
+- Latest formal chapter detected in `chapters/`: 第036章
+- Latest formal summary detected in `chapter_summaries/`: 第036章
+- Latest Fanqie published chapter verified in author backend: 第034章
+- Fanqie verification status this run: verified at 2026-05-16 09:58; chapter management shows 第034章《第四声敲门》已发布
 - Current publish-ready daily output beyond formal archive: none detected
-- Next external publish target: 第034章
-- Next local generation target after external catch-up: 第036章
+- Next external publish target: 第035章
+- Next local generation target after external catch-up: 第037章
 
 ## Current Automation State
 
@@ -38,20 +39,20 @@ Fanqie field split:
 
 ## Last Run Result
 
-- Date: 2026-05-14
+- Date: 2026-05-15
 - Automation ID: fanqie-daily-chapter-dry-run
-- Target chapter: 第035章
-- Title: 空白观察席
+- Target chapter: 第036章
+- Title: 钥匙持有人
 - QA result: passed
-- Automatic rewrite: triggered once because initial draft was 3442 non-whitespace characters; final body is 4210.
+- Automatic rewrite: triggered once because initial draft was 3860 non-whitespace characters; final body is 4291.
 - Formal chapter written: yes
 - Formal summary written: yes
-- Feedback query: attempted, failed because `python` was not found on PATH; CDP was reachable at `http://127.0.0.1:9222/json/version`.
-- Fanqie publish: attempted through the required safe publisher command, but the command could not start because `python` was not found; no retry loop was run.
-- Publish log: `daily_output/publish_logs/2026-05-14_214005_chapter_035_safe_publish_failed.json`
-- Git commit/push: previous run failed before commit because that environment denied writes inside `.git`; this was later remediated and pushed in commit `a539bd3`.
-- Remediation after failure: Python 3.14.3 and Playwright 1.58.0 were verified, Python paths were persisted to the user PATH, and `python tools\fanqie_safe_publish.py --file daily_output\第035章_番茄发布版.txt --expected-chapter 35 --open-publish-page` completed in dry-run mode.
-- External catch-up test: Fanqie author backend showed latest published chapter 第032章, so 第033章 was submitted from the existing local publish artifact. After handling typo confirmation, basic content check, AI-use selection, and final publish confirmation, chapter management showed `第33章 携带人江彻` as `已发布` at `2026-05-14 22:10`.
+- Continuation on 2026-05-16: Python 3.14.3, Playwright, CDP, and `.git` write access were verified.
+- Feedback query: `python tools\fanqie_readonly_metrics.py` succeeded and saved `feedback/imports/2026-05-16_095532_fanqie_readonly_metrics.json` plus page text.
+- Fanqie publish state before补发: verified latest external chapter 第033章 and next expectation 第034章.
+- Fanqie publish: required safe publisher submitted 第034章《第四声敲门》 successfully; follow-up verification showed 第034章 status `已发布` at `2026-05-16 09:56`.
+- Publish logs: `daily_output/publish_logs/2026-05-16_095538_chapter_034_safe_publish.json`; verification log `daily_output/publish_logs/2026-05-16_095805_fanqie_publish_state.json`.
+- Git commit/push: pending after continuation updates.
 
 ## Next Human Gate
 
@@ -70,5 +71,5 @@ Stop only if:
 ## Recommended Next Step
 
 ```text
-运行小说生产流程。先校验番茄发布页。若番茄最新仍为第033章，则优先发布本地已QA通过的第034章；外部追平后再推进第036章本地生成。
+运行小说生产流程。先校验番茄发布页。若番茄最新仍为第034章，则优先发布本地已QA通过的第035章；之后再处理第036章发布与第037章本地生成。
 ```

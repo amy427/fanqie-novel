@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-05-15T22:16:05+08:00",
+  "automation_id": "fanqie-daily-chapter-dry-run",
+  "target_external_chapter": 34,
+  "target_file": "daily_output\\第034章_番茄发布版.txt",
+  "command": "python tools\\fanqie_safe_publish.py --file daily_output\\第034章_番茄发布版.txt --expected-chapter 34 --open-publish-page --create-chapter --auto-submit",
+  "result": "failed_before_script_start",
+  "exit_code": 1,
+  "python_available": false,
+  "cdp_reachable": true,
+  "error": "python was not recognized as a cmdlet, function, script file, or operable program in the current automation shell.",
+  "action": "Recorded failure and continued local archive/commit flow without retry loop."
+}
