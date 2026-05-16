@@ -6,10 +6,10 @@ Last updated: 2026-05-16
 
 - Latest formal chapter detected in `chapters/`: 第036章
 - Latest formal summary detected in `chapter_summaries/`: 第036章
-- Latest Fanqie published chapter verified in author backend: 第034章
-- Fanqie verification status this run: verified at 2026-05-16 09:58; chapter management shows 第034章《第四声敲门》已发布
+- Latest Fanqie published chapter verified in author backend: 第035章
+- Fanqie verification status this run: verified at 2026-05-16 11:59; chapter management shows 第035章《空白观察席》已发布
 - Current publish-ready daily output beyond formal archive: none detected
-- Next external publish target: 第035章
+- Next external publish target: 第036章
 - Next local generation target after external catch-up: 第037章
 
 ## Current Automation State
@@ -51,7 +51,8 @@ Fanqie field split:
 - Feedback query: `python tools\fanqie_readonly_metrics.py` succeeded and saved `feedback/imports/2026-05-16_095532_fanqie_readonly_metrics.json` plus page text.
 - Fanqie publish state before补发: verified latest external chapter 第033章 and next expectation 第034章.
 - Fanqie publish: required safe publisher submitted 第034章《第四声敲门》 successfully; follow-up verification showed 第034章 status `已发布` at `2026-05-16 09:56`.
-- Publish logs: `daily_output/publish_logs/2026-05-16_095538_chapter_034_safe_publish.json`; verification log `daily_output/publish_logs/2026-05-16_095805_fanqie_publish_state.json`.
+- Continued publish test: verified latest external chapter 第034章, then required safe publisher submitted 第035章《空白观察席》 successfully; follow-up verification showed 第035章 status `已发布` at `2026-05-16 11:58`.
+- Publish logs: `daily_output/publish_logs/2026-05-16_095538_chapter_034_safe_publish.json`, `daily_output/publish_logs/2026-05-16_115728_chapter_035_safe_publish.json`; latest verification log `daily_output/publish_logs/2026-05-16_115949_fanqie_publish_state.json`.
 - Git commit/push: pending after continuation updates.
 
 ## Next Human Gate
@@ -71,5 +72,5 @@ Stop only if:
 ## Recommended Next Step
 
 ```text
-运行小说生产流程。先校验番茄发布页。若番茄最新仍为第034章，则优先发布本地已QA通过的第035章；之后再处理第036章发布与第037章本地生成。
+运行小说生产流程。先校验番茄发布页。若番茄最新仍为第035章，则优先发布本地已QA通过的第036章；之后再处理第037章本地生成。
 ```

@@ -1,0 +1,40 @@
+{
+  "timestamp": "2026-05-16_115728",
+  "mode": "submit",
+  "file": "daily_output\\第035章_番茄发布版.txt",
+  "expected_chapter": 35,
+  "title": "第035章 空白观察席",
+  "chapter_title_field": "空白观察席",
+  "body_non_whitespace_chars": 4210,
+  "sha256": "28cafdf4cd5883377fea6478c3b75500d26c96bdc3702295fc5cee62fbfde7f7",
+  "url": "https://fanqienovel.com/main/writer/7628203489469942846/publish/7640333874584633918?enter_from=newchapter_0",
+  "page_title": "作家专区-番茄小说网-番茄小说旗下原创文学平台",
+  "verified_page": true,
+  "auto_submit": true,
+  "opened_publish_page": true,
+  "new_page": false,
+  "page_url_contains": "",
+  "create_chapter_requested": true,
+  "filled": true,
+  "submitted": true,
+  "screenshot": "D:\\fanqie-novel\\daily_output\\publish_logs\\2026-05-16_115728_chapter_035_precheck.png",
+  "filled_sha256": "e9fbc438840358ceee05408ad442db756cd63039773c5c8849c552bf39e3166e",
+  "filled_screenshot": "D:\\fanqie-novel\\daily_output\\publish_logs\\2026-05-16_115728_chapter_035_filled.png",
+  "first_submit_click": "下一步",
+  "submit_modals": [
+    "发布提示\n检测到你还有错别字未修改，是否确定提交？\n取消提交",
+    "请选择内容检测方式\n全面检测（本章节剩余次数：2/2次）\n将对章节内容进行深度排查，标注当前章节可能存在的风险內容，辅助提升内容通过效率；\n基础检测（不限次数）\n使用平台常规功能排查特定范围的违规内容,不覆盖范围外的检测（可能会出现其他范围外内容违规无法通过的情况）\n仅基础检测\n全面检测",
+    "发布设置\n分卷\n第一卷：默认\n章节\n第35章 空白观察席\n上次提交\n第一卷第34章 第四声敲门\n是否使用AI\n是\n否\n定时发布\n关闭定时发布后，章节在通过审核后会立即发布\n取消确认发布"
+  ],
+  "confirm_submit_clicks": [
+    "提交",
+    "确认发布"
+  ],
+  "content_check_clicks": [
+    "仅基础检测"
+  ],
+  "ai_used_selected": true,
+  "post_submit_modals_handled": 3,
+  "submitted_screenshot": "D:\\fanqie-novel\\daily_output\\publish_logs\\2026-05-16_115728_chapter_035_submitted.png",
+  "submitted_screenshot_fallback": "viewport"
+}

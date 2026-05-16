@@ -332,3 +332,13 @@ RuntimeError: Body editor not found
 - JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-16_095538_chapter_034_safe_publish.json`
 - Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-16_095538_chapter_034_precheck.png`
 - Submitted: `True`
+
+## 2026-05-16_115728 chapter 035 safe publish
+- Mode: `submit`
+- Title: `第035章 空白观察席`
+- Chapter title field: `空白观察席`
+- SHA256: `28cafdf4cd5883377fea6478c3b75500d26c96bdc3702295fc5cee62fbfde7f7`
+- Verified page: `True`
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-16_115728_chapter_035_safe_publish.json`
+- Screenshot: `D:\fanqie-novel\daily_output\publish_logs\2026-05-16_115728_chapter_035_precheck.png`
+- Submitted: `True`

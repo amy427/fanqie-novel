@@ -109,3 +109,16 @@ Call log:
 - Verification JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-16_095805_fanqie_publish_state.json`
 - Chapter management: 第034章《第四声敲门》 status `已发布`, time `2026-05-16 09:56`
 - Next external target expectation: 第035章
+
+## 2026-05-16 Fanqie publish state verified before 第035章
+- Result: verified
+- Before publish: latest external chapter 第034章《第四声敲门》; next expectation 第035章 passed.
+- JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-16_115617_fanqie_publish_state.json`
+
+## 2026-05-16 Fanqie safe publish succeeded for 第035章
+- Result: submitted and verified
+- Target: 第035章《空白观察席》
+- Safe publisher JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-16_115728_chapter_035_safe_publish.json`
+- Verification JSON: `D:\fanqie-novel\daily_output\publish_logs\2026-05-16_115949_fanqie_publish_state.json`
+- Chapter management: 第035章《空白观察席》 status `已发布`, time `2026-05-16 11:58`
+- Next external target expectation: 第036章
